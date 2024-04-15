@@ -1,0 +1,279 @@
+\input{prescript.tex}
+\bibliography{Bibliography/lit.bib}	 
+  
+
+%\DefineBibliographyStrings{english}{andothers = \mkbibemph{et al\adddot}}
+%\DefineBibliographyStrings{german}{andothers = \mkbibemph{et al\adddot}}
+ 
+% \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+% 		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\setlength{\columnsep}{10mm} 
+\renewcommand{\IEEEkeywords}{\textbf{Keywords:}}
+\renewcommand{\abstract}{{\fontsize{12pt}{10pt}\selectfont\bfseries Zusammenfassung}\\[.5em]}
+
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+	{-3.5ex \@plus -1ex \@minus -.2ex}%
+	{3pt \@plus.2ex}%
+	{\normalfont\bfseries}}
+\makeatother
+
+\def\thesection{\arabic{section}}
+\usepackage{titlesec}
+%\titleformat{\section}{\normalfont\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0em}{6pt}{3pt}
+
+%\makeatletter
+%\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+%	{1em \@plus1ex \@minus.2ex}%
+%	{-1em}%
+%	{\bfseries\normalsize}}
+%\makeatother
+
+
+
+\setlength{\parindent}{0pt}
+%\usepackage[none]{hyphenat}
+%\geometry{showframe}
+\usepackage{layouts}
+%\usepackage{newtxtext}
+\usepackage{pifont}
+\usepackage{nicematrix}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+
+\newcommand{\matrixA}{% 
+	$\begin{bNiceMatrix}
+		k_{1,1,1}^{n,g} & \Cdots        & k_{v,1,1}^{n,g}\\
+		\Vdots      	& \Ddots     	&  \\
+		k_{1,k,1}^{n,g} &               & k_{v,k,1}^{n,g}\\
+	\end{bNiceMatrix}$
+}   
+
+\newcommand{\matrixB}{% 
+	$\begin{bNiceMatrix}
+		k_{1,1,c}^{n,g} & \Cdots        &k_{v,1,c}^{n,g}\\
+		\Vdots          &\Ddots         & \\
+		k_{1,k,c}^{n,g} &               &k_{v,k,c}^{n,g}\\
+	\end{bNiceMatrix}$
+} 
+
+
+\DeclareCaptionLabelSeparator{colonquad}{:\quad}
+\SetCaptionDefault{labelseparator}{colonquad}
+\begin{document}  
+	\def\X#1{% 
+		\ding{\numexpr171+#1\relax}%
+	}
+%	\maketitle    
+	\twocolumn[
+	\begin{@twocolumnfalse}
+		\vspace*{.3cm}
+%		\vspace*{1.02cm}
+		\maketitle 
+	\end{@twocolumnfalse}
+	\vspace*{-1.4cm}
+	\begin{abstract}
+		\fontsize{10pt}{12pt}\selectfont
+		Die bewährte Methode der Elektrochemischen Impedanzspektroskopie soll in Zukunft auf das gesamte Energiespeichersystem in Elektrofahrzeugen angewandt werden.
+		Die erfassten Spannungsantworten der Batteriezellen weisen besonders kleine Amplituden und schlechte Störabstände auf. In diesem Kontext soll ein messtechnisches Teilproblem untersucht werden. Für die Umsetzung war es Aufgabe, durch einen steuerbaren Vorverstärker den Dynamikbereich des Analog-Digital-Wandlers (ADC) maximal auszunutzen. Aufgrund der schlechten Signalqualität bei hoher Verstärkung führt das zu frühzeitiger Übersteuerung des ADC. Hieraus ergaben sich zwei Zielstellungen. Zum Einen war die Sättigung des ADC zu erkennen und in der Signalauswertung zu berücksichtigen. Zum Anderen sollte der durch Sättigung entstehende Fehler bestmöglich kompensiert werden. Als Randbedingung musste sich auf Methoden beschränkt werden, welche mit minimalem Rechenaufwand im Sensorchip für jede Batteriezelle implementiert werden können. 
+    	Der Lösungsansatz greift auf die fortlaufende Beobachtung des abgetasteten Signals mit einfachen statistischen Verfahren zurück. Es werden dabei drei Parameter ermittelt: der Anteil der Datenpunkte in Sättigung, die Varianz und Kurtosis der verbleibenden Datenpunkte, die sich nicht in Sättigung befinden. Es kann einen Zusammenhang dieser Größen mit der Signalamplitude ermittelt werden. Dieser kann zur Steuerung des Vorverstärkers herangezogen werden, um die Übersteuerung zu reduzieren. Alternativ kann ein Korrekturfaktor errechnet werden, welcher die fehlerhaft ermittelte Signalamplitude weitgehend ausgleicht. Dieser Korrekturfaktor kann bei der Berechnung der Impedanz eingesetzt werden. Die vorgestellten Ergebnisse zeigen, dass damit die negativen Auswirkung für das zu bestimmende Impedanzspektrum infolge der Übersteuerung deutlich zu reduzieren sind.	 
+	\end{abstract}
+	\vspace{.5em}
+	\begin{IEEEkeywords}
+		\fontsize{10pt}{12pt}\selectfont
+		\normalfont Elektrochemische Impedanzspektroskopie, Mixed-Signal-Processing, Histogramm, ADC-Clipping
+	\end{IEEEkeywords} 
+	\vspace{3em}
+	] 
+	%===============================================================
+	% 	Einleitung 
+	%===============================================================
+\graphicspath{{./BILDER}}
+\section{Einleitung}	
+
+In Elektrofahrzeugen der nächsten Generation soll auch das Batterie-Management-System (BMS) verbessert werden. Zu diesem Zweck gibt es das Bestreben, die im Labor etablierte Methode der Elektrochemischen Impedanzspektroskopie (EIS) einzusetzen. Mithilfe der EIS lassen sich wertvolle Informationen über den Zustand der Batteriezelle ableiten, hierzu gehören der aktuelle Ladezustand, die Zellalterung, die Leistungsprädiktion und die Innentemperatur [4]. Im Fahrzeug werden die Batteriezellen mit niederfrequenten Wechselströmen angeregt, die an jeder Batteriezelle eine Spannungsantwort erzeugen [3]. Aus dem Wechselstrom und der Spannungsantwort wird die Impedanz für ein Spektrum von Anregungsfrequenzen errechnet. In Elektrofahrzeugen werden niederohmige Batteriezellen (typisch: $R_i < \SI{1}{m\Omega}$) eingesetzt werden. Zudem ist der Anregestrom aus Gründen der verfügbaren Energie und des Schaltungsaufwands limitiert. Für die Wechselströme zur Anregung wird eingeschätzt, dass der Bereich zwischen $\SI{1}{A}$ und $\SI{10}{A}$ umsetzbar ist. Infolgedessen liegen die Spannungsantworten in der Größenordnung  von $\SI{1}{mV}$. Sie sind mindestens prozentgenau, d.h. auf sieben Bit oder mehr digital aufzulösen. Die Messsysteme hierfür benötigen analoge Verstärker. Zudem muss eine Subtraktion des Gleichanteils der Zellspannung erfolgen. Dies kann durch eine steuerbare Subtrahiererschaltung oder eine kapazitive Wechselstromkopplung erfolgen. Letzteres ist für niederfrequente Anregung bis unter ein Hertz nicht mehr technisch umsetzbar, weil die notwendigen Kondensatoren sehr groß würden. Daher wird der Gleichanteil auch durch eine steuerbare Referenzspannung kompensiert. Diese wird ebenfalls vom erfassten Digitalsignal errechnet. Dabei wird eine symmetrische Nutzung des Dynamikbereichs des ADC angestrebt. 
+Weil Verstärkungsfaktoren in der Größenordnung von $1000$ sind mitunter erforderlich sind, unter Praxisbedingungen werde typisch starke Stör- und Rauscheinflüssen auftreten. Die Verstärkungsfaktoren sind nur begrenzten Anzahl an Stufen einstellbar. In der Gesamtheit führt das zu einem Widerspruch bei der Auslegung der analogen Vorverarbeitung. Entweder wird auf Signalauflösung verzichtet oder es wird ein Fehler durch teilweise Übersteuerung unvermeidbar. Dieser Gegensatz ist der Ausgangspunkt für den nachfolgend vorgestellten Lösungsansatz.
+
+\section{Systemkontext}
+Im Batterie-Management-System (BMS)  des Fahrzeugs sind komplexe Rechenmodelle für die Zustandsbestimmung der Batterie implementiert. Sie sollen zukünftig auch auf die Impedanzwerte bei verschiedenen Anregefrequenzen zurückgreifen können. Hiervon sollen wertvolle Informationen wie Ladezustand, Temperatur, Alterungszustand und Strombelastbarkeit abgeleitet werden. Die Impedanzwerte sind komplexe Größen, welche sich aus den Wechselgrößen von Strom und Spannung errechnen lassen. Hierzu wird ein Wechselstrom mit einer bestimmten Frequenz als Anregung durch die Reihenschaltung der Zellen geleitet. Über jeder Zelle fällt eine resultierende Spannungsantwort ab. Deren Amplitude vom ohm'schen Anteil des Innenwiderstands der Zellen bestimmt, die Phase von den kapazitiven Effekten beeinflusst.
+Bei der Impedanzberechnung werden die Messdaten von Strom und Spannung blockweise ausgewertet, in der Regel erfolgt dies im Frequenzbereich durch Fouriertransformation. Folgende messtechnische Rahmenbedingungen bestehen bei Fahrzeugbatterien für die Erfassung der Impedanz der Zellen. Die Abb.~\ref{fig:system} zeigt den Messvorgang im Überblick. Die Messung des Anregestroms im Bereich einiger Ampere wird als messtechnisch weniger Problematisch eingeschätzt. Die erforderliche Genauigkeit im Prozentbereich ist mit vertretbarem Aufwand erreichbar. Vereinfachend wird für den Anregestrom von einem nicht übersteuertem Messsignal ohne Rauscheinfluss ausgegangen. Dies gilt nicht für den Messbereich der Spannungsantworten. Die niederohmigen Zellen erfordern hohe Verstärkungsfaktoren, welche zudem an das aktuelle Signal angepasst werden, dies erfolgt mit Hilfe einer stufenweise Steuerung des Vorverstärkers durch die nachgeschaltete digitale Signalverarbeitung. Die Voruntersuchung zeigen, dass im Gegensatz zum Strommessung ist von einem sehr ungünstigem Störabstand von bis zu $0dB$ SNR auszugehen ist. Unter diesen Bedingungen ergeben sich in der Regel zahlreiche Abtastpunkte, welche sich im oberen und unteren Sättigungsbereich der Analog-Digital-Umsetzung liegen.
+
+%Der Systemkontext wird durch das Messsystem selbst und die zu vermessende Lithium-Ionen-Zelle bzw. dem Lithium-Ionen-Zellverbund beschrieben. Ein besonderer Fokus liegt auf der Niederohmigkeit der Zellen, welche zentral die wesentliche Problemstellung des Messsystems bedingt. Mit der Niederohmigkeit wird der vergleichsweise hohe Strom und die geringe Spannungsantwort bedingt. Die Abb.~\ref{fig:system} zeigt den Systemkontext. Die Stromquelle regt die Lithium-Ionen-Zelle mit einem Wechselstrom an. Die resultierende Spannungsantwort fällt aufgrund der Niederohmigkeit der Zellen sehr gering aus. Dies resultiert in einem schlechten Rauschabstand des Signals. Die genaue Größe der resultierenden Spannungsantwort ist aufgrund des variierenden Innenwiederstands der Zelle unbekannt und erfordert eine einstellbare Verstärkung. Dies erfolgt mittels Programmable Gain Amplifier (PGA). Die Verstärkung des Signals hat zum Ziel den Dynamikbereich des ADC immer optimal auszunutzen und damit eine optimale Auflösung zu gewährleisten. Die Lithium-Ionen-Zelle bringt zusätzlich einen Gleichanteil in die Messkette mit ein, dieser muss vor der Verstärkung des Signals auf Null reduziert werden. Da bei einer EIS-Messung auch Frequenzanteile im Sub Hertz Bereich von Interesse sind, ist in der Anwendung eine AC-Kopplung nicht möglich und erfordert eine Subtrahiererschaltung. Die Verstärkung der Strommessung ist konstant, da die Größe des Stroms bekannt ist. Typisch wird ein Faktor von bis zu $10$ angenommen. Die gemessenen Spannungen über einen Shunt-Widerstand der Stromanregung und der Spannungsantwort werden anschließend quantisiert.
+\begin{figure}[h] 
+	\centering 
+%	\includegraphics[width=1\columnwidth]{../img/signalfluss_eis.pdf}
+	\includegraphics[width=1\columnwidth]{../img/histo_real.pdf}
+	\caption{Für die EIS wird die Lithium-Ionen-Zelle galvanostatisch angeregt. Die notwendigen Ströme benötigen, anders als die resultierende Spannungsantwort, nur eine geringe Verstärkung. Störungen wir Rauschen werden vornehmlich durch die Stromquelle eingebracht.}
+	\label{fig:system}
+\end{figure}
+%\section{Problembeschreibung}    
+%Eine besondere Herausforderung in dem gegebenen System ist das Erfassen der Spannungsantwort. Wie einleitend schon
+%aufgeführt liegt die erwartete Amplitude der Spannungsantwort im niedrigen Millivolt Bereich. Dies führt zu einem erwartungsgemäß schlechtem Störabstand, da einerseits die Störungen der Anregung sich auf die Spannungsantwort übertragen und gleichzeitig das Signal nur knapp über Störungen wie dem Grundrauschen Rauschen des Systems liegen. Das Verstärken eines stark verrauschten Signals führt zu einer schlechten Ausnutzung des Dynamikbereichs des ADCs, da die Rauschanteile des Signals den ADC frühzeitig in Sättigung treiben. 
+
+Die Abb.~\ref{fig:Rauschanteil} zeigt, dass schon durch Sättigung des ADC nur durch Rauschanteile des Signals die berechnete Amplitude verfälscht wird, obwohl das Signalamplitude ohne Rauschen noch nicht übersteuert ist. Ob sich der ADC in Sättigung befindet und in wie weit die Amplitude verfälscht ist, kann durch eine Klirrfaktoranalyse festgestellt werden. Sie ist jedoch vergleichsweise rechenaufwändig.  
+Wenn sich die Ableitung des gemessenen Signals Abschnittsweise zu null ergibt, kann eine Aussage über den Grad der Übersteuerung abgeleitet werden. Bei starken Rauschanteilen ist diese Methode ungeeignet. 
+Weiterhin ist es für eine optimale Aussteuerung notwendig, dass sich die Abtastwerte des Signals möglichst symmetrisch im Dynamikbereich des ADC verteilen. Dies wird ebenfalls durch das Zusammenwirken von analoger und digitaler Signalverarbeitung sichergestellt. Das vorgestellte Verfahren lässt eine Auswertung der Symmetrie der blockweise erfassten Messwerte zu und steuert damit die erforderliche Referenzspannung, welche von der veränderlichen Batteriespannung subtrahiert wird. 
+Diese Kompensierung muss hinreichend präzise erfolgen, da anschließend hohen Verstärkungsfaktoren verwendet werden. 
+
+ \begin{figure}[h!] 
+	\centering 
+	%\includegraphics[width=.8\columnwidth]{PositionSensorArrayII_P-crop.pdf}
+	\includegraphics[width=1\columnwidth]{../img/noise-err.pdf}
+	\caption{Auch wenn sich ausschließlich Rauschanteil in Sättigung befinden, wirkt sich dies auf die Berechnung der Amplitude. Die rote vertikale Linie zeigt an, ab welchem SNR sich 0.1\% der Datenpunkte im Sättigungsbereich des ADCs befinden.}
+	\label{fig:Rauschanteil}
+\end{figure}
+
+\section{Lösungsansatz} 
+ 
+Der Lösungsansatz besteht in der stochastischen Auswertung der Verteilung der Datenpunkte des Signals. Das Histogramm wird in $h_b = 2^n$ mit $n = 12$ Klassen aufgeteilt, dies entspricht den Quantisierungsstufen des ADC. Die Randbereiche $h_0$ und $h_b$ beinhalten die Datenpunkte in den Grenzbereichen des Dynamikumfanges des ADC. Über den Anteil der Datenpunkte, welche sich in den Randbereichen befinden, lässt sich eine Aussage über den Sättigungszustand des ADC treffen. In Kombination mit den stochastischen Momenten Varianz und Kurtosis kann der Fehler welcher, durch Sättigung des ADC entsteht, einem Korrekturfaktor zugeordnet und kompensiert werden. 
+
+\subsection{Histogramme sinusförmiger Signale }
+Periodische sinusförmige Signale weisen eine charakteristische Verteilungsfunktion auf, welche qualitativ einem Spezialfall der Beta-Verteilung für $\alpha = \beta$ entspricht. In der Abb.~\ref{fig:Histogramm-Gain} ist die charakteristische Ausprägung des Histogramms eines periodengenauen, sinusförmigen Signals für steigende Verstärkungen zu sehen. Zu erkennen ist, dass die Datenpunkte sich bei zunehmender Verstärkung des Signals in die Randbereiche verlagern. Dies wird auch durch die Änderung der Varianz und Kurtosis der Verteilungen deutlich.
+\begin{figure}[h!] 
+	\centering 
+	\includegraphics[width=1\columnwidth]{../img/beta-distribution.pdf}
+	\caption{Die Abbildung zeigt die Histogramme für rauschfreie sinusförmige Signale. Der qualitative Verlauf der Verteilung im Histogramm entspricht bei einem gut ausgesteuerten Signal (oben) dem Spezialfall der Beta-Verteilung. Mit zunehmender Signalsättigung verändert sich auch die Verteilung im Histogramm.}
+	\label{fig:Histogramm-Gain}
+\end{figure} 
+
+Die Abb.~\ref{fig:Histogramm-SNR} zeigt den Verlauf des Histogramms bei zunehmendem Rauschen (Verschlechterung des SNR) und konstanter Verstärkung. Im Vergleich zu einem rauschfreien sinusförmigen Signalverlauf bildet sich das Histogramm weniger markant aus. Die Datenpunkte verteilen sich gleichförmiger über alle Klassen des Histogramms, bis die Sättigung durch starkes Rauschen wieder zu einer Fokussierung der Datenpunkte in den Randbereichen führt. Diese Charakteristiken kann verwendet werden, um Rückschlüsse auf die Signalqualität des vorliegenden Signals zu ziehen. Ziel des Ansatzes ist es, eine recheneffiziente Methode zur Beurteilung der Signalqualität und ggf. der Korrektur des Signals zu erhalten. Die Beurteilung der Signalqualität muss anwendungsbezogen erfolgen. In der konkreten Anwendung der EIS-Sensorik ist das primäre Ziel eine maximale Auflösung des Signals, ohne die Berechnung der Amplitude des Signals durch Sättigung des ADC zu verfälschen. Es ist demnach wünschenswert, den Dynamikbereich voll auszusteuern und eine gewisse Sättigung zuzulassen, solange eine Korrektur möglich ist.
+
+\begin{figure}[h!] 
+	\centering 
+	\includegraphics[width=1\columnwidth]{../img/noise-histogramm.pdf}
+	\caption{Die Abbildung zeigt die Histogramme für sinusförmige Signale mit abnehmendem SNR. Deutlich wird, dass die Histogramme sich weniger markant ausprägen.}
+	\label{fig:Histogramm-SNR}
+\end{figure} 
+
+%
+%\begin{itemize}
+%	\item\textbf{ Detektion von Sättigung:} Ob sich der ADC in Sättigung befindet, kann durch das Festlegen eines Schwellwerts erfolgen. Die Schwellwertbildung erfolgt über die Verhältnisbildung der Datenpunkte des Histogramms zu den sich in Sättigung befindlichen Datenpunkten. Wie Abb. 2 zeigt, sind schon wenige Datenpunkte ausreichend, um Abweichungen in der Berechnung zu erhalten. Der Schwellwert muss anwendungsbezogen individuell experimentell bestimmt werden.
+%	\item \textbf{Korrektur der Amplitude:} Die Korrektur des durch Sättigung entstehenden Fehlers in der Amplitude des Signals kann durch die Auswertung der Messgrößen: Stochastische Momente und die Anzahl der Datenpunkte in Sättigung erfolgen. In der Anwendung muss hierfür zuvor experimentell eine Korrekturfaktormatrix berechnet werden. Der Korrekturfaktor kann dieser Matrix anschließend auf Basis der angeführten Messgrößen des zu korrigierenden Signals entnommen werden. Es wird der Zusammenhang zwischen der Verstärkung, dem Rauschverhältnis und den Messgrößen ausgenutzt.  
+%\end{itemize}
+ 
+\subsection{Bildung der Korrekturfaktoren}
+Der Zusammenhang der Korrekturfaktoren wird über den Störabstand und der Verstärkung des Signals mit den drei angeführten Größen: 
+
+\begin{itemize}
+	\item Anteil der Datenpunkte in Sättigung %Gl.~\ref{eq:dist_sat}, Kurtosis %aus Gl.~\ref{eq:kurtosis} 
+	\item Varianz der Häufigkeitsverteilung Signals (bereinigt\footnote[1]{Das Signal beinhaltet keine Datenpunkte, welche sich im Sättigungsbereich des ADC befinden.\label{foot:bereinigt}})
+	\item Kurtosis der Häufigkeitsverteilung des Signals (bereinigt\footref{foot:bereinigt})
+	\end{itemize}
+
+%und Varianz %aus Gl.~\ref{eq:varianz} 
+%aus der Häufigkeitsverteilung des Signals.
+
+Der Anteil der Datenpunkte in Sättigung ergibt sich aus der Anzahl der Datenpunkte in den äußersten Klassen des Histogramms nach Gl.~\ref{eq:dist_sat}. Der Dynamikbereich des ADC wird bei 12-Bit in $b=4096$ Stufen aufgelöst. Jeder Datenpunkt kann in einem Histogramm einer Klasse $b$ zugeordnet werden. Was der Verteilung des Signals entspricht. 
+
+\begin{equation}
+	\label{eq:dist_sat}
+	h_{sat} = h_0 + h_b = \frac{n_0 + n_b}{n} \cdot 100
+\end{equation}
+
+%\begin{equation}
+%	\label{eq:varianz}
+%\sigma^2 =  \frac{1}{n}\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} = \frac{1}{n}\sqrt{\sum_{i=1}^{n} (u_{g,n}(i) - \bar{u_{g,n}})^2}
+%\end{equation}
+
+%\begin{equation} 
+%	\label{eq:kurtosis}
+%w = \frac{1}{n} \sum_{i=1}^{n}(\frac{x_i - \bar{x}}{s})^4 = \frac{1}{n} \sum_{i=1}^{n}(\frac{u_{g,n}(i) - \bar{u_{g,n}}}{s})^4
+%\end{equation}
+%mit dem arithmetischem Mittel $\bar{x}$ und der Standardabweichung $s$. 
+%\linebreak
+
+
+Die Ermittlung der Faktoren muss zuvor mittels Simulation experimentell erfolgen. In der Simulation wird ein ideales Referenzsignal $u_{Ref}(t)$ verwendet. Für die Berechnung eines Korrekturfaktors wird nur die Amplitude der Grundfrequenz $f_0$ im Spektrum betrachtet. Mit Hilfe der Fourier Analyse ergibt sich die Referenzamplitude $\hat{U}_{Ref}(f_0)$. Für die Berechnung einer Korrekturfaktormatrix $K$ ist es notwendig, für alle Kombinationen aus SNR $n$ und Verstärkung $g$ jeweils die Amplitude $\hat{U}_{n,g}(f_0)$ der Grundfrequenz $f_0$ der Signale $u_{n,g}(t)$, die bereinigte\footref{foot:bereinigt} Kurtosis $w(u_{n,g}(t))$ und die Varianz $\sigma^2(u_{n,g}(t))$ zu berechnen sowie den Anteil der Datenpunkte in Sättigung $h_{sat}(u_{n,g}(t))$ zu bestimmen. 
+
+Die Signale werden zur Ermittlung der Korrekturfaktoren mit additivem Rauschen beaufschlagt, multiplikativ verstärkt in den Minimal- und Maximalwerten begrenzt. Anschließend werden Verstärkung und SNR auf die stochastischen Größen abgebildet. Die Abbildung ermöglicht anhand der stochastischen Größen der späteren Messung eine Zuordnung des Korrekturfaktors.
+Für einen Korrekturfaktor ergibt sich folgende Berechnung: 
+
+$$
+k_{n,g} = \frac{|\hat{U}_{Ref}(f_0)|}{|\hat{U}_{n,g}(f_0)|} % = \frac{|\mathcal{F}(u_{Ref}(t))(f_0)|}{|\mathcal{F}(u_{n,g}(t))(f_0)|}
+$$
+
+Die Abb.~\ref{fig:lut} zeigt die Charakteristik der stochastischen Momente (bereinigt\footref{foot:bereinigt} ) und die Anzahl der Datenpunkte in Sättigung für die Signale $u_{n,g}(t)$. 
+
+Der Korrekturfaktor wird den stochastischen Momenten und dem Anteil der Datenpunkte in Sättigung $h_{sat}$ zugeordnet.
+
+Durch eine Zuordnung der stochastischen Eigenschaften des Ausgangssignals mit der Abweichung der Amplitude zur Referenzgröße kann eine Matrix aufgestellt werden. In Abhängigkeit der stochastischen Eigenschaften und den Anteil der Datenpunkte in Sättigung kann der Korrekturfaktor der Matrix entnommen werden. 
+
+\begin{tikzpicture}
+	\node[inner sep=0pt] (matA) {\matrixA};
+	\node[inner sep=0pt, above right = 1pt and 1pt of matA, scale=0.8] (matB) {\matrixB};
+	\node[above left = 0pt and 0pt of matA] {$K_{v,k,c}=$};
+	\draw[black,shorten >=2mm, shorten <=4mm, dashed] (matA.north west)-- (matB.north west);
+	\draw[black,shorten >=2mm, shorten <=2mm, dashed] (matA.north east)-- (matB.north east);
+	\draw[black,shorten >=2mm, shorten <=2mm, dashed] (matA.south east)-- (matB.south east);
+\end{tikzpicture}
+
+Die Abb.~\ref{fig:lut}(oben) zeigt die stochastischen Eigenschaften und den Anteil der Datenpunkte in Sättigung über Verstärkung und SNR der Signale. Die Merkmale für sich lassen keine eindeutige Zuordnung zu einem Korrekturfaktor zu. Die Merkmale weisen jedoch Sensitivität in verschiedenen Bereichen auf. Dies lässt eine quasi eindeutige Zuordnung anhand der Merkmale des Signals zu einem Korrekturfaktor zu. Die entstehenden Abweichungen beider Matrizen in der Abb.~\ref{fig:lut}(unten) kommt durch die nicht eineindeutige Zuordnung der Korrekturfaktoren zustande. Die Abweichung zum soll ist vergleichsweise gering.
+
+\begin{figure*}[h!]
+	\centering
+	\includegraphics[width=.9\textwidth]{../img/lut.pdf}
+	\caption{Das EIS-Spektrum nach der weist eine deutliche Verbesserung im direkten Vergleich auf. Die Korrektur ist besonders bei hohen Verstärkungen wirksam. }
+	\label{fig:lut} 
+\end{figure*}
+
+
+\section{Simulation}
+
+In der Simulation wird die Korrekturfaktormatrix berechnet und überprüft, ob mit den ermittelten Faktoren eine Korrektur der Amplitude möglich ist. Zur Ermittlung der Korrekturfaktormatrix wird der Signalfluss des Systems in der Simulation nachgebildet, siehe Abb.~\ref{fig:Simulation}. Das Stromsignal wird vor dem Berechnen der Spannungsantwort mit additivem, weißem Rauschen beaufschlagt. Das verwendete Batteriemodell zur Berechnung der Spannungsantwort ist ein RRC-Modell ($R0 = \SI{6}{m\Omega}, R1=\SI{4}{m\Omega}, C1=\SI{500}{mF}$). Die Anregung erfolgt mit einer Amplitude von $\SI{1}{A}$ der erwartete Wechselanteil der Spannungsantwort liegt bei ca. $\SI{10}{mV}$. Die Spannungsantwort wird transient berechnet. Der durch die Batteriespannung aufgeschlagene Gleichanteil der Spannungsantwort wird Subtrahiert. Je nach angewandtem Messverfahren, ist dies auch für die Strommessung notwendig. In dieser Simulation wird der Strom nicht verstärkt und weist keinen Gleichanteil auf. Die Quantisierung erfolgt mit einem Dynamikbereich von $12$-Bit über  $\SI{3.3}{V}$. Die Verarbeitung der Signale erfolgt blockweise. Für die Bildung der Referenzfaktoren, wird die Simulation und Berechnung für den gesamten anwendungsbezogen Wertebereich der Verstärkung und dem Störabstand durchgeführt. In der späteren Anwendung wird auf die berechnete Korrekturfaktormatrix über die stochastischen Momente und dem Anteil der Datenpunkte in Sättigung zu gegriffen. Der entnommene Korrekturfaktor wird multiplikativ mit dem Signal im Frequenzbereich verrechnet, Gl.~\eqref{eq:corr}. 
+
+\begin{equation}
+	\label{eq:corr}
+	Z_k(f) = \frac{\hat{U}_{n,g}(f) \cdot k_{v,k,c}^{n,g}}{\hat{I}(f)}
+\end{equation}
+
+\begin{figure}[h!] 
+	\centering 
+%	\includegraphics[width=1\columnwidth]{../img/signalfluss_histogram.pdf}
+	\includegraphics[width=1\columnwidth]{../img/histo_sim.pdf}
+	\includegraphics[width=1\columnwidth]{../img/stat_analyser.pdf}
+	\caption{Die Simulation erweitert die reale Umgebung, um die statistische Auswertung des quantisierten Zeitsignals.}
+	\label{fig:Simulation}
+\end{figure} 
+
+\section{Ergebnisse und Diskussion}
+Die Ergebnisse in Abb.~\ref{fig:Ergebnisse} zeigen eine deutliche Verbesserung in der Berechnung der EIS.
+Die Berechnung der EIS weist insbesondere in den niederfrequenten Bereichen einen ausgeprägten Fehler auf. Hier ist ein Zusammenhang mit dem Frequenzgang des verwendeten Modells zu vermuten. Die mit steigender Frequenz abnehmende Amplitude führt zu weniger Signalsättigung und damit auch zu weniger Abweichung in der Messung. Hier kann anwendungsbezogen ein Schwellwert festgelegt werden, ab welchem eine Korrektur der Messung Sinn hat. Als Maß für einen Schwellwert bietet sich der Anteil der Datenpunkte in Sättigung an. 
+Ein Vergleich mit den stochastischen Momenten aus Abb.~\ref{fig:lut} und dem root mean square error (RMSE ) des Signals zeigt einen deutlichen Zusammenhang zwischen der Sättigung des Signals und der Varianz des Signals. Die Varianz reagiert bei einem guten Störabstand besonders sensitiv auf den Grad der Sättigung des Signals. Wie der Abb.~\ref{fig:Ergebnisse} in der Darstellung unten links zu entnehmen ist, wird der ADC durch das Signal bei einer Verstärkung von ca. $160$ in Sättigung getrieben. Dieser Bereich ist auch deutlich in der Varianz zu erkennen. Die Kurtosis weist bei geringer Verstärkung und gutem Störabstand hingegen weniger Änderung auf. Bei besonders schlechtem Störabstand ist kaum noch eine Änderung zu erkennen. Der sensitive Bereich liegt bei der Kurtosis zwischen $22dB - 1dB$ und oberhalb des Sättigungsbereichs bei einem Verstärkungsfaktor von ca. $160$. Die Abb.~\ref{fig:Ergebnisse} (unten) zeigt zudem einen deutlichen Zusammenhang zwischen dem RMSE und dem Anteil der Datenpunkte in Sättigung. 
+Die Kombination der Werte ergibt eine gutes Maß zur Klassifizierung des Signals. Die Differenz zwischen $K_{n,g}$ und $K_{v,k,c}$ (Abb.~\ref{fig:lut}, unten rechts) ist gering und zeigt in der Anwendung nur kleine Abweichungen. Die Ergebnisse der Berechnung zeigen dahingegen über das gesamte Spektrum bei großer Abweichung von Soll eine deutliche Verbesserung.
+
+\begin{figure*}[bh!]
+	\centering
+	\includegraphics[width=.99\textwidth]{../img/ergebnisse.pdf}
+	\caption{Das EIS-Spektrum nach der weist eine deutliche Verbesserung im direkten Vergleich auf. Die Korrektur ist besonders bei hohen Verstärkungen wirksam. }
+	\label{fig:Ergebnisse} 
+\end{figure*}
+
+   
+%\renewcommand*{\bibfont}{\fontsize{9pt}{10pt}\selectfont}
+%\selectlanguage{ngerman} 
+%\selectbiblanguage{ngerman}
+
+%\printbibliography[title=Literaturnachweis] 
+\begin{thebibliography}{[99]}
+	\bibitem{Chan-2012}
+	A. D. C. Chan. J. R. Green. D.Maclsaac. G. D. Fraser, „Detection of ADC clipping, quantization noise, and amplifier saturation in surface electromyography,“ IEEE International Symposium on Medical Measurements and Applications Proceedings, 2012.
+	
+	\bibitem{Jung-1993}
+	P. Jung, „Periodically driven stochastic systems”, Physics Reports,  pp. 175-295, 1993.
+	
+	\bibitem{Roscher-2016}
+	V. Roscher. K.-R. Riemschneider. N. Sassano, „Batterie-Zellensensoren mit drahtloser Kommunikation und verteilter Signalverarbeitung,“ in Automobil-Sensorik, T. Tille, Hrsg., Springer, 2016.
+	
+	\bibitem{Hammerschmidt-2023}
+	T. Hammerschmidt, J.P. Schmidt, „Impedanzsensorik für Batteriezellen in Elektro-Fahrzeugen,“ in Automobil-Sensorik, T. Tille, Hrsg., Springer, 2016.
+	
+	\bibitem{Frahm-2023}
+	T. Frahm „Sensorsystem für die Impedanzspektroskopie in Fahrzeugbatterien: Analogvorstufe, Signalverarbeitung und Software“, Masterarbeit, HAW Hamburg, 2023.
+	
+\end{thebibliography}
+	
+
+ 
+\end{document} 
