@@ -6,33 +6,13 @@ clear; clc; close all;
 
 %%
 
-freq_list = logspace(-0, 4, 50);
+freq_list = logspace(0, 4, 50);
 n_Freq = length(freq_list);
-
-% n_Cell_in_parallel = 1;
-% 
-% flagChDCh = true;               % charging(true) or discharging(false)?
-% QAh = 4.5*n_Cell_in_parallel;   % battery capacitance; Ah
-% QAs = QAh*3600;
-% SOCStart = 60;
 
 % single P45B
 R0 = 6E-3; % Ohm
 R1 = 4E-3;   % Ohm
 C1 = 500E-3;    % capacity, F
-% aged
-R00 = 6.1E-3; % Ohm
-R11 = 4.1E-3;   % Ohm
-C11 = 500.1E-3;    % capacity, F
-
-% tau1 = R1*C1;
-
-% module = (36 x P45B) in parallel according to values provided from DRX
-% (no L so far)
-% R0 = 0.17E-3;   % Ohm
-% R1 = 0.1E-3;    % Ohm
-% C1 = 14.4;      % capacity, F
-% tau1 = R1*C1;
 
 
 %%
@@ -44,14 +24,8 @@ n_SNR = length(snr);
 snr_fokus = 5;
 noise_fit_cutoff = 2.0;
 
-%% model OCV(voltage), very simple
-% n_SOC = 100000;
-% x = -50:100/n_SOC:50;
-% QOCV = 0:100/n_SOC:100;
-% vOCV = (x.^3/50^3)*0.7 + 0.7 + 2.8;
-
 %% gain
-gain_V = linspace(120, 180, nn);%160:1:170;
+gain_V = linspace(120, 180, nn);
 n_gain_Voltage = length(gain_V);
 gain_Current = 1;
 

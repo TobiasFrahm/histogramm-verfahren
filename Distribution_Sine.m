@@ -2,7 +2,7 @@ clear all;
 close all;
 %%
 
-freq = 1;
+freq = 100;
 n_Periods = 10;
 Fs = 1000*freq;             % sample frequency
 T = 1/Fs;
@@ -27,10 +27,8 @@ n_bins = 100;
 a = 0.5;
 b = a;
 x = linspace(0, 1, n_bins);
-x_plt =linspace(-0.9, 0.9, n_bins);
-figure
+x_plt = linspace(-0.9, 0.9, n_bins);
 bb = betapdf(x, a, b);
-
 
 %%
 n_fig = 0;
@@ -162,8 +160,24 @@ xline(snr2(snr_idx), 'r')
 grid on; 
 xlabel("SNR [dB]")
 ylabel("Abweichung der Amplitude")
-title("10k sample | Gain = 1 | \alpha = " + round(abs(referenceampl), 2))
+title("10k sample | 10 periods | \alpha = " + round(abs(referenceampl), 2))
 legend("error")
 
 
 exportgraphics(fig, "img/noise-err.pdf")
+%%
+
+% signal_sin1 = 1 * sin(2 * pi * freq * time);
+% 
+% R0 = 6e-3;
+% R1 = 4e-3;
+% C1 = 500e-3;
+% R2 = 4e-3;
+% C2 = 500e-3;
+% 
+% voltage = Transient_RRCRC(Fs, signal_sin1, R0, R1, C1, R2, C2);
+% plot(voltage);
+% hold on;
+% plot(signal_sin1);
+% legend
+% grid on;
