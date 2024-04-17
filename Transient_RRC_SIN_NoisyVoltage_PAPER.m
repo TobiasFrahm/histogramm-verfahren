@@ -151,10 +151,10 @@ for ss=1:n_SNR
             current_Measured_clean = current_Measured_clean * gain_Current + 1.65;
 
             % Quantization voltage & current
-            % [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
-            % [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
-            % [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
-            % [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
+            [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
+            [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
+            [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
+            [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
   
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
