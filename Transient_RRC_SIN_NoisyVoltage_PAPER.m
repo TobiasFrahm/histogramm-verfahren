@@ -3,7 +3,6 @@
 
 %%
 clear; clc; close all;
-
 %%
 
 freq_list = logspace(0, 4, 50);
@@ -14,10 +13,8 @@ R0 = 6E-3; % Ohm
 R1 = 4E-3;   % Ohm
 C1 = 500E-3;    % capacity, F
 
-
 %%
 nn = 17;
-
 %% noise
 snr = [80 ,linspace(40, -5, nn-1)];
 n_SNR = length(snr);
@@ -57,7 +54,6 @@ limit_max = 3.3*limit_max_percent/100;
 
 %% RRC - Modell - Transient
 for ss=1:n_SNR
-
     for ff=1:n_Freq
 
         freq = freq_list(ff);       % EIS frequency
@@ -486,7 +482,7 @@ for n = 0:0
             plot(real(Z{cc,gg}(:)),-imag(Z{cc,gg}(:)), 'DisplayName',strcat("voltage gain " + gain_V(gg)), "Marker", 'x')
         end
     end
-    plot(real(Z2{cc}(:)),-imag(Z2{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
+    plot(real(Z2_clean{cc}(:)),-imag(Z2_clean{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
     title("EIS | SNR: " + snr(cc) + " dB")
     xlabel('Real{Z} (\mu\Omega)')
     ylabel('Imag{Z} (\mu\Omega)')
@@ -503,7 +499,7 @@ for n = 0:0
         end
     end
     
-    plot(real(Z2{cc}(:)),-imag(Z2{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
+    plot(real(Z2_clean{cc}(:)),-imag(Z2_clean{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
     title("EIS (korrigiert) | SNR: " + snr(cc) + " dB")
     xlabel('Real{Z_{k}} (\mu\Omega)')
     ylabel('Imag{Z_{k}} (\mu\Omega)')
@@ -559,7 +555,7 @@ for n = 0:0
             plot(gain_V, cutoff_values_Voltage_percent_plot(ss,:),'x-', 'DisplayName', strcat("SNR = " + snr(ss)+ " dB"))
         end 
     end
-    plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth',1)
+    plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth', 1)
     
     % title("Cuttoffvaules vs. Gain")
     xlabel('Voltage gain')

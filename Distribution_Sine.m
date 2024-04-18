@@ -161,7 +161,16 @@ grid on;
 xlabel("SNR [dB]")
 ylabel("Abweichung der Amplitude")
 title("10k sample | 10 periods | \alpha = " + round(abs(referenceampl), 2))
-legend("error")
+legend("deviation")
+% Create arrow
+annotation(fig,'arrow',[0.669642857142857 0.5875],...
+    [0.601380952380953 0.490476190476192]);
+
+% Create textbox
+annotation(fig,'textbox',...
+    [0.636714285714284 0.600000000000001 0.249000000000001 0.0619047619047629],...
+    'String',{'0.1% Sättigungsgrad'},...
+    'FitBoxToText','off');
 
 
 exportgraphics(fig, "img/noise-err.pdf")
