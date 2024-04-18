@@ -119,146 +119,27 @@ pdfpagelabels=	true,	% true = Roemische Zahlen usw werden dargestellt,
 
 
 
-\usepackage[%
-style		= ieee,    
-defernumbers= true,      % to set different numeric types -e.g. A1...A2 B1...B2
-sortcase	= false,%		% false- keine unterscheidung zwischen gross und kleinschrift 
-bibencoding	= utf8,%
-doi 		= true, 
-isbn 		= false,
-subentry	= false,
-url 		= false,  
-backend		= biber,
-language    = {ngerman},
-maxcitenames=2,
-mincitenames=2,
-]{biblatex}				% um 8-bit zeichen zu erkennen, fuer umlaute 
+%\usepackage[%
+%style		= ieee,    
+%defernumbers= true,      % to set different numeric types -e.g. A1...A2 B1...B2
+%sortcase	= false,%		% false- keine unterscheidung zwischen gross und kleinschrift 
+%bibencoding	= utf8,%
+%doi 		= true, 
+%isbn 		= false,
+%subentry	= false,
+%url 		= false,  
+%backend		= biber,
+%language    = {ngerman},
+%maxcitenames=2,
+%mincitenames=2,
+%]{biblatex}				% um 8-bit zeichen zu erkennen, fuer umlaute 
 
-\DeclareFieldFormat{url}{Available\addcolon\space\url{#1}}
-\DefineBibliographyStrings{german}{
-	andothers = {{et\,al\adddot}},
-	and = \&,
-	page = {\:}
-} 
-\addto\extrasenglish{\languageshorthands{ngerman}} 
+%\DeclareFieldFormat{url}{Available\addcolon\space\url{#1}}
+%\DefineBibliographyStrings{german}{
+%	andothers = {{et\,al\adddot}},
+%	and = \&,
+%	page = {\:}
+%} 
+%\addto\extrasenglish{\languageshorthands{ngerman}} 
 \usepackage{upgreek}
 \usepackage{ltablex}
-
-
-
-
-%===========================================
-% Momente 
-%===========================================
-\newcommand{\MK}{\ensuremath{M_\mathrm{K}}\xspace}
-\newcommand{\MA}{\ensuremath{M_\mathrm{A}}\xspace}
-\newcommand{\MG}{\ensuremath{M_\mathrm{G}}\xspace}
-\newcommand{\MT}{\ensuremath{M_\mathrm{T}}\xspace}
-%===========================================
-% Winkel 
-%===========================================
-\newcommand{\Amom}{\ensuremath{{\vartheta_\mathrm{e}}}\xspace}
-\newcommand{\Ator}{\ensuremath{{\vartheta_\mathrm{T}}}\xspace}
-%===========================================
-% Reibbeiwerte 
-%===========================================
-\newcommand{\mg}{\ensuremath{{\mu_\mathrm{G}}}\xspace}
-\newcommand{\mk}{\ensuremath{{\mu_\mathrm{K}}}\xspace}
-\newcommand{\Fv}{\ensuremath{{F_\mathrm{M}}}\xspace}
-\newcommand{\dtwo}{\ensuremath{{d_\mathrm{2}}}\xspace}
-\newcommand{\dthree}{\ensuremath{{d_\mathrm{3}}}\xspace}
-\newcommand{\dthread}{\ensuremath{{d}}\xspace}
-\newcommand{\Dkm}{\ensuremath{{D_\mathrm{Km}}}\xspace}
-\newcommand{\dw}{\ensuremath{{{d_\mathrm{W}}}}\xspace}
-\newcommand{\dhe}{\ensuremath{{{d_\mathrm{ha}}}}\xspace}
-\newcommand{\ds}{\ensuremath{{{d_\mathrm{S}}}}\xspace}
-\newcommand{\Pg}{\ensuremath{{P}}\xspace}
-\newcommand{\Gs}{\ensuremath{{G}}\xspace}
-\newcommand{\len}{\ensuremath{l}\xspace}
-\newcommand{\lenk}{\ensuremath{l_\mathrm{k}}\xspace}
-\newcommand{\tm}{\ensuremath{{\mathrm{I}}}\xspace}
-\newcommand{\fs}{\ensuremath{{{f_\mathrm{S}}}}\xspace}
-\newcommand{\fp}{\ensuremath{{{f_\mathrm{P}}}}\xspace}
-\newcommand{\fg}{\ensuremath{{{f_\mathrm{M}}}}\xspace}
-\newcommand{\As}{\ensuremath{{{A_\mathrm{S}}}}\xspace}
-\newcommand{\El}{\ensuremath{{{E}}}\xspace}
-\newcommand{\Aflank}{\ensuremath{{{\alpha}}}\xspace}
-\newcommand{\tors}{\ensuremath{{{\uptau}}}\xspace} 
-\newcommand{\radi}{\ensuremath{{{r}}}\xspace}
-\newcommand{\Wp}{\ensuremath{{{W_\mathrm{P}}}}\xspace}
-\newcommand{\vx}{\ensuremath{{{V_\mathrm{x}}}}\xspace}
-\newcommand{\vy}{\ensuremath{{{V_\mathrm{y}}}}\xspace}
-\newcommand{\VX}{\ensuremath{{{\mathbf{V}_\mathrm{x}}}}\xspace}
-\newcommand{\VY}{\ensuremath{{{\mathbf{V}_\mathrm{y}}}}\xspace}
-
-%% 
-% Wirkung der Momente 
-\newcommand{\Mar}{\ensuremath{{\color{red!50!black}{\overset{\curvearrowright}{\mathrm{M}}_\mathrm{A}}}}\xspace}
-\newcommand{\Mtr}{\ensuremath{{\color{red!50!black}{\overset{\curvearrowright}{\mathrm{M}}_\mathrm{T}}}}\xspace}
-\newcommand{\Mgr}{\ensuremath{{\color{red!50!black}{\overset{\curvearrowright}{\mathrm{M}}_\mathrm{G}}}}\xspace}
-\newcommand{\Mkr}{\ensuremath{{\color{red!50!black}{\overset{\curvearrowright}{\mathrm{M}}_\mathrm{K}}}}\xspace}
-\newcommand{\Mtl}{\ensuremath{{\color{blue!50!black}{\overset{\curvearrowleft}{\mathrm{M}}_\mathrm{T}}}}\xspace}
-\newcommand{\Mgl}{\ensuremath{{\color{blue!50!black}{\overset{\curvearrowleft}{\mathrm{M}}_\mathrm{G}}}}\xspace}
-\newcommand{\Mkl}{\ensuremath{{\color{blue!50!black}{\overset{\curvearrowleft}{\mathrm{M}}_\mathrm{K}}}}\xspace}
-\newcommand{\nxn}[1]{\num{#1}$\times$\num{#1}}
-\newcommand{\myref}[2]{\href{#1}{#2}}
-\DeclareSIUnit\rpm{rpm}
-% Gewindemoment ? 
-\def\mgtext{thread torque\xspace}
-% Kopfmoment ? 
-\def\mktext{head friction moment\xspace}
-% Anziehdrehmoment 
-\def\matext{tightening torque\xspace} 
-\newcommand{\snull}{\ensuremath{\mathrm{S0}}\xspace}
-\newcommand{\amag}{\ensuremath{\alpha_\mathrm{m}}\xspace}
-\newcommand{\asx}{\ensuremath{\alpha_\mathrm{x}}\xspace}
-\newcommand{\asy}{\ensuremath{\alpha_\mathrm{y}}\xspace}
-\newcommand{\asum}{\ensuremath{\alpha_\mathrm{s}}\xspace}
-\newcommand{\send}{\ensuremath{\mathrm{S15}}\xspace}
-\newcommand{\rs}{\ensuremath{\mathbf{r}_\mathrm{s}}\xspace}
-\newcommand{\rd}{\ensuremath{\mathbf{r}_\mathrm{d}}\xspace}
-\newcommand{\rds}{\ensuremath{\mathbf{r}}\xspace}
-\newcommand{\rabs}{\ensuremath{\mathrm{r}}\xspace}
-\newcommand{\Hx}{\ensuremath{H_\mathrm{x}}\xspace}
-\newcommand{\Hy}{\ensuremath{H_\mathrm{y}}\xspace}
-\newcommand{\rx}{\ensuremath{r_\mathrm{x}}\xspace}
-\newcommand{\ry}{\ensuremath{r_\mathrm{y}}\xspace}
-\newcommand{\rz}{\ensuremath{r_\mathrm{z}}\xspace}
-\newcommand{\mx}{\ensuremath{m_\mathrm{x}}\xspace}
-\newcommand{\my}{\ensuremath{m_\mathrm{y}}\xspace}
-\newcommand{\mz}{\ensuremath{m_\mathrm{z}}\xspace}
-\newcommand{\ux}{\ensuremath{v_\mathrm{x}}\xspace}
-\newcommand{\uy}{\ensuremath{v_\mathrm{y}}\xspace}
-\newcommand{\Ux}{\ensuremath{V_\mathrm{x}}\xspace}
-\newcommand{\Uy}{\ensuremath{V_\mathrm{y}}\xspace}
-\newcommand{\Nend}{\ensuremath{\mathrm{N}}\xspace}
-\newcommand{\Kend}{\ensuremath{\mathrm{K}}\xspace}
-\newcommand{\nrun}{\ensuremath{n}\xspace}
-\newcommand{\dphix}{\ensuremath{\Delta\varphi_\mathrm{x}}\xspace}
-\newcommand{\dphiy}{\ensuremath{\Delta\varphi_\mathrm{y}}\xspace}
-\newcommand{\dphixn}{\ensuremath{\Delta\varphi_\mathrm{xn}}\xspace}
-\newcommand{\dphiyn}{\ensuremath{\Delta\varphi_\mathrm{yn}}\xspace}
-\newcommand{\md}{\ensuremath{\mathbf{m}}\xspace}
-\DeclareMathSymbol{\shortminus}{\mathbin}{AMSa}{"39}
-
-
-\defbibenvironment{bibliography}
-{\list
-	{\printtext[labelnumberwidth]{%
-			\printfield{labelprefix}%
-			\printfield{labelnumber}}}
-	{\setlength{\labelwidth}{\labelnumberwidth}%
-		\setlength{\leftmargin}{\labelwidth}%
-		\setlength{\labelsep}{1pt}%
-		\addtolength{\leftmargin}{\labelsep}%
-		\setlength{\itemsep}{\bibitemsep}%
-		\setlength{\parsep}{\bibparsep}}%
-	\renewcommand*{\makelabel}[1]{##1}}
-{\endlist}
-{\item}
-
-
-
-
-
-
