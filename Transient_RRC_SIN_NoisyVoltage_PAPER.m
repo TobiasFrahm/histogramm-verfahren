@@ -145,10 +145,10 @@ for ss=1:n_SNR
             current_Measured_clean = current_Measured_clean * gain_Current + 1.65;
 
             % Quantization voltage & current
-            % [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
-            % [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
-            % [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
-            % [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
+            [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
+            [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
+            [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
+            [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
   
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -375,7 +375,7 @@ for ff = 1:n_Freq
     end
 end
 
-
+%%
 % plot
 ff = 1;
 yytikz = [];
@@ -389,10 +389,16 @@ end
 
 figure(13)
 tiledlayout(2,3,"TileSpacing","tight","Padding","tight")
+
 nexttile;
-colormap(jet);
+cm = colormap(parula);
+% cm(:,3) = linspace(0,1,256);
+% cm(:,2) = linspace(1,0.6,256);
+% cm(:,1) = linspace(1,0.3,256);
+
 heatmap((histo_clip_count{ff}/(10000)*100));
 ax = gca;
+colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
 xlabel("Gain");
@@ -401,9 +407,9 @@ title("Sättigungsgrad [%]");
 colorbar
 
 nexttile;
-colormap(jet);
 heatmap((histo_Varianz{ff}));
 ax = gca;
+colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
 title(["Signalvarianz", "ohne Datenpunkte in Sättigung"]);
@@ -412,9 +418,9 @@ ylabel("SNR [dB]");
 colorbar
 
 nexttile;
-colormap(jet);
 heatmap((histo_Kurtosis{ff}));
 ax = gca;
+colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
 title(["Signalkurtosis", "ohne Datenpunkte in Sättigung"]);
@@ -424,31 +430,38 @@ colorbar
 
 
 nexttile;
-colormap(jet);
 h = heatmap(sollamp{ff});
+h.CellLabelFormat = "%.4f";
+h.ColorScaling = 'scaledrows';
+% h.ColorLimits = [0 max(max(sollamp{ff}))];
+ax = gca;
+colormap(ax, cm);
+ax.XData = round(gain_V, 2);
+ax.YData = round(snr, 2);
+xlabel("Gain");
+ylabel("SNR [dB]");
+title("Referenz - AKF (normiert)");
+colorbar
+
+nexttile;
+h = heatmap(imlut{ff});
 h.CellLabelFormat = "%.2f";
 ax = gca;
-ax.XData = round(gain_V, 2);
-ax.YData = round(snr, 2);
-xlabel("Gain");
-ylabel("SNR [dB]");
-title(["Referenz - AKF"]);
-colorbar
-
-nexttile;
-colormap(jet);
-heatmap(imlut{ff});
-ax = gca;
+h.ColorScaling = 'scaledrows';
+% h.ColorLimits = [0 max(max(imlut{ff}))];
+colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title("AKF");
+title("AKF (normiert)");
 xlabel("Gain");
 ylabel("SNR [dB]");
 colorbar
 
 nexttile;
-colormap(jet);
-heatmap((imlut{ff}-sollamp{ff}));
+h = heatmap((imlut{ff}-sollamp{ff}));
+h.CellLabelFormat = "%.2f";
+% h.ColorScaling = 'scaledrows';
+h.Colormap = sky;
 ax = gca;
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
