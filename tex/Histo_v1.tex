@@ -183,7 +183,7 @@ In der späteren Arbeitsphase kann das Messsignal nach den statistischen Eigensc
 
 \smallskip
 \section{Simulationsbeispiel}
-Zunächst werden die AKF in der Simulation\footnote[2]{Der Quellcode zum dargestellten Simulationsbeispiel: https://github.com/TobiasFrahm/histogramm-verfahren} berechnet. Hierfür wurde der in Abb.~\ref{fig:factor_eval} dargestellte Signalfluss implementiert. Das Stromsignal wird vor der Berechnung der Spannungsantwort mit additivem weißem Rauschen beaufschlagt. Das verwendete Batteriemodell ist ein einfaches RRC-Modell ($R0 = \SI{6}{m\Omega}, R1=\SI{4}{m\Omega}, C1=\SI{500}{mF}$), womit wurde die Spannungsantwort transient berechnet. Der Rauscheinfluss am Verstärker wurden nicht berücksichtigt. Die Anregung erfolgt mit einer Amplitude von $\SI{1}{A}$, der erwartete Wechselanteil der Spannungsantwort liegt bei ca. $\SI{10}{mV}$. Der durch die Batteriespannung aufgeschlagene Gleichanteil der Spannungsantwort wird subtrahiert. Die Quantisierung erfolgt mit einem Dynamikbereich von $12$-Bit, die Sättigung des ADC wird durch die Limitierung der Werte simuliert. Die Grenzwerte liegen für das Minimum bei $\SI{0}{V}$ und im Maximum bei $\SI{3.3}{V}$. Die Verarbeitung der Signale erfolgt blockweise mit 10000 Abtastwerten. Für die Bildung der AKF wird die Simulation für den Wertebereich der Verstärkung $g = 120 ... 180$ und dem Störabstand $n = -5 ... \SI{80}{dB}$ durchgeführt. In der Arbeitsphase erfolgt die Berechnung der EIS aus Messwerten. Wenn Sättigung auftritt, dann wird auf die zuvor berechnete LUT zugegriffen. Der dort entnommene AKF wird multiplikativ mit der Amplitude der Spannung im Frequenzbereich verrechnet, Gl.~\eqref{eq:corr_mat}. Zur Validierung wurden die vorgenannten Bereiche der Verstärkung und des Störabstands durchlaufen und jeweils das Impedanzspektrum für alle Frequenzen $f_i$ der EIS bestimmt.
+Zunächst werden die AKF in der Simulation\footnote[2]{Der Quellcode zum dargestellten Simulationsbeispiel: https://github.com/TobiasFrahm/histogramm-verfahren} berechnet. Hierfür wurde der in Abb.~\ref{fig:factor_eval} dargestellte Signalfluss implementiert. Das Stromsignal wird vor der Berechnung der Spannungsantwort mit additivem weißem Rauschen beaufschlagt. Das verwendete Batteriemodell ist ein einfaches RRC-Modell ($R0 = \SI{6}{m\Omega}, R1=\SI{4}{m\Omega}, C1=\SI{500}{mF}$), womit wurde die Spannungsantwort transient berechnet. Der Rauscheinfluss am Verstärker wurden nicht berücksichtigt. Die Anregung erfolgt mit einer Amplitude von $\SI{1}{A}$, der erwartete Wechselanteil der Spannungsantwort liegt bei ca. $\SI{10}{mV}$. Der durch die Batteriespannung aufgeschlagene Gleichanteil der Spannungsantwort wird subtrahiert. Die Quantisierung erfolgt mit einem Dynamikbereich von $12$-Bit, die Sättigung des ADC wird durch die Limitierung der Werte simuliert. Die Grenzwerte liegen für das Minimum bei $\SI{0}{V}$ und im Maximum bei $\SI{3.3}{V}$. Die Verarbeitung der Signale erfolgt blockweise mit 10000 Abtastwerten. Für die Bildung der AKF wird die Simulation für den Wertebereich der Verstärkung $g = 120 ... 180$ und dem Störabstand $n = -5 ... \SI{80}{dB}$ durchgeführt. In der Arbeitsphase erfolgt die Berechnung der EIS aus Messwerten. Wenn Sättigung auftritt, dann wird auf die zuvor berechnete LUT zugegriffen. Der dort entnommene AKF wird multiplikativ mit der Amplitude der Spannung im Frequenzbereich verrechnet, siehe Gl.~\eqref{eq:corr_mat}. Zur Validierung wurden die vorgenannten Bereiche der Verstärkung und des Störabstands durchlaufen und jeweils das Impedanzspektrum für alle Frequenzen $f_i$ der EIS bestimmt.
 
 \begin{equation}
 	\label{eq:corr_mat}
@@ -204,7 +204,6 @@ Eine statistische Analyse der Abtastwerte ist bereits zur Steuerung der Vorverst
 Die Untersuchung entstand im Rahmen des Verbundprojekts ProMoBiS - "Progressive Multizell-Verbund-Konzepte für Batteriesysteme mit integrierter Sensorik". Das Forschungsprojekt wird vom Bundesministerium für Wirtschaft und Klimaschutz (BMWK) im Rahmen des 7. Energieforschungsprogramms (Förderkennzeichen 03ETE046G) im Bereich "\,Energiewende im Verkehr"\,gefördert und vom Projektträger Jülich betreut.
    
 \begin{thebibliography}{[99]}
-
 	\bibitem{Schmidt-2013}
 	J. P. Schmidt, \textit{Verfahren zur Charakterisierung und Modellierung von Lithium-Ionen Zellen} , Dissertation, Karlsruhe, KIT Scientific Publishing (2013)
 	
@@ -247,11 +246,6 @@ Die Untersuchung entstand im Rahmen des Verbundprojekts ProMoBiS - "Progressive 
 
 	\bibitem{Frahm-2023}
 	T. Frahm \textit{Sensorsystem für die Impedanzspektroskopie in Fahrzeugbatterien: Analogvorstufe, Signalverarbeitung und Software}, Masterarbeit, HAW Hamburg, 2023.
-
-
 	
 \end{thebibliography}
-	
-
- 
 \end{document} 
