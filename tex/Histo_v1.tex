@@ -44,39 +44,6 @@
 \usetikzlibrary{positioning}
 
 
-\newcommand{\matrixA}{% 
-	$\begin{bNiceMatrix}
-		k_{1,1,1}& \Cdots        & k_{v,1,1}\\
-		\Vdots      	& \Ddots     	&  \\
-		k_{1,k,1} &               & k_{v,k,1}\\
-	\end{bNiceMatrix}$
-}   
-
-\newcommand{\matrixB}{% 
-	$\begin{bNiceMatrix}
-		k_{1,1,c} & \Cdots        &k_{v,1,c}\\
-		\Vdots          &\Ddots         & \\
-		k_{1,k,c} &               &k_{v,k,c}\\
-	\end{bNiceMatrix}$
-} 
-
-\newcommand{\matrixC}{% 
-	$\begin{bNiceMatrix}
-		k_{1,1,1} & \Cdots        & k_{v,1,1}\\
-		\Vdots      	& \Ddots     	&  \\
-		k_{1,k,1} &               & k_{v,k,1}\\
-	\end{bNiceMatrix}$
-}
-
-\newcommand{\matrixD}{% 
-	$\begin{bNiceMatrix}
-		k_{1,1,1} & \Cdots        & k_{v,1,1}\\
-		\Vdots      	& \Ddots     	&  \\
-		k_{1,k,1} &               & k_{v,k,1}\\
-	\end{bNiceMatrix}$
-}
-
-
 \DeclareCaptionLabelSeparator{colonquad}{:\quad}
 \SetCaptionDefault{labelseparator}{colonquad}
 \begin{document}  
@@ -108,18 +75,17 @@
 
 \section{Motivation}	
 
-In Elektrofahrzeugen der nächsten Generation soll auch das Batterie-Management-System (BMS) weiter verbessert werden. Zu diesem Zweck gibt es das Bestreben, die im Labor etablierte Methode der Elektrochemischen Impedanzspektroskopie (EIS) einzusetzen. Mithilfe der EIS lassen sich wertvolle Informationen über den Zustand der Batteriezelle ableiten, hierzu gehören der aktuelle Ladezustand, die Zellalterung, die Leistungsprädiktion und die Innentemperatur~\cite{Schmidt-2013, Kohs-2022}. Im Fahrzeug werden die Batteriezellen mit niederfrequenten Wechselströmen angeregt, die an jeder Batteriezelle eine Spannungsantwort erzeugen~\cite{KeilJossen-2012, Roscher-2016, Hammerschmidt-2016}. Aus dem Wechselstrom und der Spannungsantwort wird die Impedanz für ein Spektrum von Anregungsfrequenzen errechnet. In Elektrofahrzeugen werden Batteriezellen mit sehr geringem Innenwiderstand bis unter einem Milliohm eingesetzt. Zudem ist der Anregestrom aus Gründen der verfügbaren Energie und des Schaltungsaufwands limitiert. Für die Wechselströme zur Anregung wird eingeschätzt, dass der Bereich zwischen $\SI{1}{A}$ und $\SI{10}{A}$ umsetzbar ist. Infolgedessen liegen die Spannungsantworten in der Größenordnung von $\SI{1}{mV}$. Sie sind mindestens prozentgenau zu erfassen, d.~h. auf sieben Bit oder mehr digital aufzulösen. Der ADC benötigt hierfür einen analogen Vorverstärker. Zudem muss eine Subtraktion des Gleichanteils der Zellspannung erfolgen. Dies kann durch eine steuerbare Subtrahierschaltung oder eine kapazitive Wechselstromkopplung erfolgen. Letzteres ist für eine niederfrequente Anregung bis unter ein Hertz nicht mehr praktisch umsetzbar, weil die notwendigen Kondensatoren sehr groß würden. Daher wird der Gleichanteil auch durch eine steuerbare Referenzspannung kompensiert. Diese wird ebenfalls vom erfassten Digitalsignal errechnet. Dabei wird eine symmetrische Nutzung des Dynamikbereichs des ADC angestrebt. Weil Vorverstärkungsfaktoren in der Größenordnung von $1000$ mitunter erforderlich sind, werden unter Praxisbedingungen starke Stör- und Rauscheinflüsse auftreten. Die Verstärkungsfaktoren sind nur mit einer begrenzten Anzahl an Stufen einstellbar. In der Gesamtheit führt das zu einem Zielkonflikt. Entweder wird auf Signalauflösung verzichtet oder es wird ein Fehler durch teilweise Übersteuerung unvermeidbar. Diese gegensätzliche Problematik besteht auch in anderen Anwendungen~\cite{Abel-1991,Ting-2013, Zhou-2019, Chan-2012}.
-Dieser Gegensatz ist der Ausgangspunkt für den nachfolgend vorgestellten Lösungsansatz.
+In Elektrofahrzeugen der nächsten Generation soll auch das Batterie-Management-System (BMS) weiter verbessert werden. Zu diesem Zweck gibt es das Bestreben, die im Labor etablierte Methode der Elektrochemischen Impedanzspektroskopie (EIS) einzusetzen. Mithilfe der EIS lassen sich wertvolle Informationen über den Zustand der Batteriezelle ableiten, hierzu gehören der aktuelle Ladezustand, die Zellalterung, die Leistungsprädiktion und die Innentemperatur~\cite{Schmidt-2013, Kohs-2022}. Im Fahrzeug werden die Batteriezellen mit niederfrequenten Wechselströmen angeregt, die an jeder Batteriezelle eine Spannungsantwort erzeugen~\cite{KeilJossen-2012, Roscher-2016, Hammerschmidt-2016}. Aus dem Wechselstrom und der Spannungsantwort wird die Impedanz für ein Spektrum von Anregungsfrequenzen errechnet. In Elektrofahrzeugen werden Batteriezellen mit sehr geringem Innenwiderstand bis unter einem Milliohm eingesetzt. Zudem ist der Anregestrom aus Gründen der verfügbaren Energie und des Schaltungsaufwands limitiert. Für die Wechselströme zur Anregung wird eingeschätzt, dass der Bereich zwischen $\SI{1}{A}$ und $\SI{10}{A}$ umsetzbar ist. Infolgedessen liegen die Spannungsantworten in der Größenordnung von $\SI{1}{mV}$. Sie sind mindestens prozentgenau zu erfassen, d.~h. auf sieben Bit oder mehr digital aufzulösen. Der ADC benötigt hierfür einen analogen Vorverstärker. Zudem muss eine Subtraktion des Gleichanteils der Zellspannung erfolgen. Dies kann durch eine steuerbare Subtrahierschaltung oder eine kapazitive Wechselstromkopplung erfolgen. Letzteres ist für eine niederfrequente Anregung bis unter ein Hertz nicht mehr praktisch umsetzbar, weil die notwendigen Kondensatoren sehr groß würden. Daher wird der Gleichanteil auch durch eine steuerbare Referenzspannung kompensiert. Diese wird ebenfalls vom erfassten Digitalsignal errechnet. Dabei wird eine symmetrische Nutzung des Dynamikbereichs des ADC angestrebt. Weil Vorverstärkungsfaktoren in der Größenordnung von $1000$ mitunter erforderlich sind, werden unter Praxisbedingungen starke Stör- und Rauscheinflüsse auftreten. Die Verstärkungsfaktoren sind nur mit einer begrenzter Stufenzahl einstellbar. In der Gesamtheit führt das zu einem Zielkonflikt. Entweder wird auf Signalauflösung verzichtet oder es wird ein Fehler durch teilweise Übersteuerung des ADC unvermeidbar. Diese gegensätzliche Problematik besteht auch in anderen Anwendungen~\cite{Abel-1991,Ting-2013, Zhou-2019, Chan-2012} und ist der Ausgangspunkt für den nachfolgend vorgestellten Lösungsansatz.
 
 \begin{figure*}[tbh!] 
 	\centering 
 	\includegraphics[width=1\textwidth]{../img/system.pdf}
-	\caption{Die Berechnung der Impedanz wird infolge von unbekannter Amplitude und Rauscheinflüssen verfälscht, wenn eine Sättigung des ADC eintritt (oben). Zielstellung des vorgestellten Verfahrens ist, die Verfälschung durch einen Amplitude-Korrekturfaktor weitgehend auszugleichen (unten).}
+	\caption{Die Berechnung der Impedanz wird infolge von unbekannter Amplitude und Rauscheinflüssen verfälscht, wenn eine Sättigung des ADC eintritt (oben). Ziel des vorgestellten Verfahrens ist, die Verfälschung durch einen Amplitude-Korrekturfaktor weitgehend auszugleichen (unten).}
 	\label{fig:system}
 \end{figure*}
 
 \section{Systemkontext}
-Im Batterie-Management-System (BMS) des Fahrzeugs sind komplexe Rechenmodelle für die Zustandsbestimmung der Batterie implementiert. Sie sollen zukünftig auch auf die Impedanzwerte bei verschiedenen Anregefrequenzen zurückgreifen können. Hiervon sollen wertvolle Informationen wie Ladezustand, Temperatur, Alterungszustand und Strombelastbarkeit abgeleitet werden. Die Impedanzwerte sind komplexe Größen, welche sich aus den Wechselgrößen von Strom und Spannung errechnen lassen. Hierzu wird ein Wechselstrom mit einer bestimmten Frequenz als Anregung durch die Reihenschaltung der Zellen geleitet. Über jeder Zelle fällt eine resultierende Spannungsantwort ab. Deren Amplitude wird vom ohm'schen Anteil des Innenwiderstands der Zellen bestimmt und die Phase von den kapazitiven Effekten beeinflusst. Es sind Rechenmodelle auf der Basis von Ersatzschaltbildern mit mehreren RC-Gliedern üblich~\cite{KeilJossen-2012}.
+Im BMS des Fahrzeugs sind komplexe Rechenmodelle für die Zustandsbestimmung der Batterie implementiert. Sie sollen zukünftig auch auf die Impedanzwerte bei verschiedenen Anregefrequenzen zurückgreifen können. Hiervon sollen wertvolle Informationen wie Ladezustand, Temperatur, Alterungszustand und Strombelastbarkeit abgeleitet werden. Die Impedanzwerte sind komplexe Größen, welche sich aus den Wechselgrößen von Strom und Spannung errechnen lassen. Hierzu wird ein Wechselstrom mit einer bestimmten Frequenz als Anregung durch die Reihenschaltung der Zellen geleitet. Über jeder Zelle fällt eine resultierende Spannungsantwort ab. Deren Amplitude wird vom ohm'schen Anteil des Innenwiderstands der Zellen bestimmt und die Phase von den kapazitiven Effekten beeinflusst. Es sind Rechenmodelle auf der Basis von Ersatzschaltbildern mit mehreren RC-Gliedern üblich~\cite{KeilJossen-2012}.
 
 \smallskip
 Bei der Impedanzberechnung werden die Messdaten von Strom und Spannung blockweise ausgewertet, in der Regel erfolgt dies nach Transformation in den Frequenzbereich. Die Abb.~\ref{fig:system} zeigt den Messvorgang im Überblick, dabei bestehen folgende Rahmenbedingungen: Die Messung des Anregestroms im Bereich einiger Ampere wird als messtechnisch weniger problematisch eingeschätzt. Die erforderliche Genauigkeit im Prozentbereich ist mit vertretbarem Aufwand erreichbar. Vereinfachend wird für den Anregestrom von einem nicht übersteuerten Messsignal ausgegangen. Dies gilt nicht für den Messbereich der Spannungsantworten. Die niederohmigen Zellen erfordern hohe Verstärkungsfaktoren, welche zudem an das aktuelle Signal angepasst werden. Dies erfolgt mithilfe einer stufenweise Steuerung des Vorverstärkers durch die nachgeschaltete digitale Signalverarbeitung. Die Voruntersuchungen zeigen, dass im Gegensatz zur Strommessung von einem sehr ungünstigen Störabstand auszugehen ist. Unter diesen Bedingungen ergeben sich in der Regel zahlreiche Abtastpunkte, welche sich im oberen und unteren Sättigungsbereich der Analog-Digital-Umsetzung liegen.
@@ -127,7 +93,7 @@ Bei der Impedanzberechnung werden die Messdaten von Strom und Spannung blockweis
 \begin{figure}[t!] 
 	\centering
 	\includegraphics[width=1\columnwidth]{../img/noise-err.pdf}
-	\caption{Rauschanteile bewirken eine Abweichung in der berechneten Amplitude.}
+	\caption{Rauschanteile bewirken eine Abweichung in der berechneten Amplitude $\alpha$ der DFT.}
 	\label{fig:Rauschanteil}
 \end{figure}
 
@@ -140,7 +106,7 @@ Der Lösungsansatz besteht in der stochastischen Auswertung der Verteilung der D
 
 \section{Statistische Analyse}
 
-Das Histogramm findet unter anderem Anwendung zum Testen und zur Charakterisierung von Analog-Digital-Wandlern~\cite{Gamad-2009}. Sinusförmige Signale weisen eine charakteristische Verteilungsfunktion auf, welche qualitativ einem Spezialfall der Beta-Verteilung für $\alpha = \beta$ entspricht. In der Abb.~\ref{fig:Histogramm-Gain} (oben) ist die charakteristische Ausprägung des Histogramms eines periodengenauen, sinusförmigen Signals für steigende Verstärkungen zu sehen. Zu erkennen ist, dass die Datenpunkte sich bei zunehmender Verstärkung des Signals in die Randbereiche verlagern. Der Anteil der sich in Sättigung befindlichen Abtastwerte wird im folgenden Sättigungsgrad $c$ genannt. Dies wird auch durch die statistischen Momente der Verteilung beeinflusst. Dazu gehören Varianz und Kurtosis (Wölbung).
+Das Histogramm findet unter anderem Anwendung zum Testen und zur Charakterisierung von Analog-Digital-Wandlern~\cite{Gamad-2009}. Sinusförmige Signale weisen eine charakteristische Verteilungsfunktion auf, welche qualitativ einem Spezialfall der Beta-Verteilung für $\alpha = \beta$ entspricht. In der Abb.~\ref{fig:Histogramm-Gain} (linke Spalte) ist die charakteristische Ausprägung des Histogramms eines periodengenauen, sinusförmigen Signals für steigende Verstärkungen zu sehen. Zu erkennen ist, dass die Datenpunkte sich bei zunehmender Verstärkung des Signals in die Randbereiche verlagern. Der Anteil der sich in Sättigung befindlichen Abtastwerte wird im folgenden Sättigungsgrad $c$ genannt. Dies wird auch durch die statistischen Momente der Verteilung beeinflusst. Dazu gehören Varianz und Kurtosis (Wölbung).
 \begin{figure*}[h!] 
 	\hspace*{-2mm}
 	\centering 
@@ -167,7 +133,7 @@ Der Sättigungsgrad ergibt sich aus der Anzahl der Datenpunkte in den äußerste
 	c = h_0 + h_b = \frac{n_0 + n_b}{n} \cdot 100
 \end{equation}
 
-Die Ermittlung der AKF muss zuvor mittels Simulation experimentell erfolgen. 
+Die Ermittlung der AKF muss zuvor mittels Simulation erfolgen. 
 Dafür wird in der Simulation ein sinusförmiges Referenzsignal $u_{Ref}(t)$ mit bekannter Amplitude verwendet, das kein Rauschen aufweist. Spektralanteile außerhalb der Grundfrequenz $f_0$ des Referenzsignals werden nicht betrachtet. 
 Dieses Signal $u_{Ref}(t)$ wird außerdem mit additivem Rauschen beaufschlagt, entsprechend dem Batteriemodell beeinflusst und multiplikativ verstärkt. Anschließend wird es in den Minimal- und Maximalwerten begrenzt und quantisiert. Hierfür werden die relevanten Kombinationen aus SNR $n$ und Verstärkung $g$ durchlaufen. Es ergibt sich das Signal $u_{n,g}(t)$. Dafür wird jeweils der Sättigungsgrad des ADC, die Varianz $\sigma^2(u_{n,g}(t))$ und die Kurtosis $w(u_{n,g}(t))$ bestimmt.
 Für den AKF ergibt sich im Frequenzbereich Gl.~\eqref{eq:corr}.
@@ -206,11 +172,11 @@ Zunächst wird eine Kalibrationsphase durchgeführt, in welcher eine Zuordnung d
 Die Einträge der LUT werden durch Simulationsläufe für die Kombinationen der Parameter Verstärkung und Rauschanteil erzeugt. Dabei durchlaufen die Parameter stufenweise Bereiche, die für die Anwendung zuvor abgeschätzt wurden. Sofern dabei Einträge der LUT nicht besetzt werden, erfolgt eine Interpolation.
 Die Mehrfachbesetzung von Einträgen in der LUT kam in der Simulation selten vor, in diesem Fall wurde der vorherige Eintrag überschrieben. Der resultierende Fehler hat einen vernachlässigbaren Einfluss. Dies entspricht auch der geringen Abweichung in der Differenzdarstellung in Abb.~\ref{fig:lut} (unten rechts). 
 
-In der späteren Nutzungsphase kann das Messsignal nach den statistischen Eigenschaften blockweise analysiert werden. Die drei Ergebnisse der Analyse können unmittelbar als Index der LUT verwendet werden und der AKF unmittelbar aus der LUT ausgelesen werden. Die Abb.~\ref{fig:lut} zeigt die Charakteristik des Sättigungsgrades und der stochastischen Momente für die Signale $u_{n,g}(t)$. Als Alternative zur LUT kann eine Funktion von drei Variablen verwendet werden. Die Koeffizienten einer Linearkombination von $c$, $\sigma^2$ und $w$ wurden durch numerische Optimierung bestimmt und zeigten vergleichbare Ergebnisse.
+In der späteren Nutzungsphase kann das Messsignal nach den statistischen Eigenschaften blockweise analysiert werden. Die drei Ergebnisse der Analyse können unmittelbar als Index der LUT verwendet werden und der AKF aus der LUT ausgelesen werden. Die Abb.~\ref{fig:lut} zeigt die Charakteristik des Sättigungsgrades und der stochastischen Momente für die Signale $u_{n,g}(t)$. Als Alternative zur LUT kann eine Funktion von drei Variablen verwendet werden. Die Koeffizienten einer Linearkombination von $c$, $\sigma^2$ und $w$ wurden durch numerische Optimierung bestimmt und zeigten vergleichbare Ergebnisse.
 
 \smallskip
-\section{Simulationsexperiment}
-Zunächst werden die AKF in der Simulation\footnote[2]{Der Quellcode zur Simulation: https://github.com/TobiasFrahm/histogramm-verfahren} berechnet. Hierfür wurde der in Abb.~\ref{fig:factor_eval} dargestellte Signalfluss implementiert. Das Stromsignal wird vor der Berechnung der Spannungsantwort mit additivem weißem Rauschen beaufschlagt. Das verwendete Batteriemodell ist ein einfaches RRC-Modell ($R0 = \SI{6}{m\Omega}, R1=\SI{4}{m\Omega}, C1=\SI{500}{mF}$), damit wurde die Spannungsantwort transient berechnet. Der Rauscheinfluss am Verstärker wurden in dem Simulationsexperiment vereinfachend nicht berücksichtigt. Die Anregung erfolgt mit einer Amplitude von $\SI{1}{A}$, der erwartete Wechselanteil der Spannungsantwort liegt bei ca. $\SI{10}{mV}$. Der durch die Batteriespannung aufgeschlagene Gleichanteil der Spannungsantwort wird subtrahiert. Die Quantisierung erfolgt mit einem Dynamikbereich von $12$-Bit, die Sättigung des ADC wird durch die Limitierung der Werte simuliert. Die Grenzwerte liegen für das Minimum bei $\SI{0}{V}$ und im Maximum bei $\SI{3.3}{V}$. Die Verarbeitung der Signale erfolgt blockweise mit $10000$ Abtastwerten. Für die Bildung der AKF wird die Simulation für den Wertebereich der Verstärkung $g = 120 ... 180$ und dem Störabstand $n = -5 ... \SI{80}{dB}$ durchgeführt. In der Nutzungsphase wird die EIS berechnet, dabei wird auf die vorberechnete LUT zugegriffen. Der dort entnommene AKF wird multiplikativ mit der Amplitude im Frequenzbereich verrechnet, Gl.~\eqref{eq:corr_mat}. Zur Validierung wurden die vorgenannten Bereiche der Verstärkung und des Störabstands durchlaufen und jeweils die EIS bestimmt.
+\section{Simulation}
+Zunächst werden die AKF in der Simulation\footnote[2]{Der Quellcode zur Simulation: https://github.com/TobiasFrahm/histogramm-verfahren} berechnet. Hierfür wurde der in Abb.~\ref{fig:factor_eval} dargestellte Signalfluss implementiert. Das Stromsignal wird vor der Berechnung der Spannungsantwort mit additivem weißem Rauschen beaufschlagt. Das verwendete Batteriemodell ist ein einfaches RRC-Modell ($R0 = \SI{6}{m\Omega}, R1=\SI{4}{m\Omega}, C1=\SI{500}{mF}$), womit wurde die Spannungsantwort transient berechnet. Der Rauscheinfluss am Verstärker wurden nicht berücksichtigt. Die Anregung erfolgt mit einer Amplitude von $\SI{1}{A}$, der erwartete Wechselanteil der Spannungsantwort liegt bei ca. $\SI{10}{mV}$. Der durch die Batteriespannung aufgeschlagene Gleichanteil der Spannungsantwort wird subtrahiert. Die Quantisierung erfolgt mit einem Dynamikbereich von $12$-Bit, die Sättigung des ADC wird durch die Limitierung der Werte simuliert. Die Grenzwerte liegen für das Minimum bei $\SI{0}{V}$ und im Maximum bei $\SI{3.3}{V}$. Die Verarbeitung der Signale erfolgt blockweise mit $10000$ Abtastwerten. Für die Bildung der AKF wird die Simulation für den Wertebereich der Verstärkung $g = 120 ... 180$ und dem Störabstand $n = -5 ... \SI{80}{dB}$ durchgeführt. In der Nutzungsphase wird die EIS berechnet, dabei wird auf die vorberechnete LUT zugegriffen. Der dort entnommene AKF wird multiplikativ mit der Amplitude der Spannung im Frequenzbereich verrechnet, Gl.~\eqref{eq:corr_mat}. Zur Validierung wurden die vorgenannten Bereiche der Verstärkung und des Störabstands durchlaufen und jeweils die EIS bestimmt.
 
 \begin{equation}
 	\label{eq:corr_mat}
@@ -220,12 +186,12 @@ Zunächst werden die AKF in der Simulation\footnote[2]{Der Quellcode zur Simulat
 
 \section{Ergebnisse und Diskussion}
 Die Ergebnisse in Abb.~\ref{fig:Ergebnisse} zeigen eine deutliche Verbesserung in der Berechnung der EIS. Es werden in der Abbildung die Nyquist-Plots des einfachen RRC-Modells dargestellt, die einen Halbkreis in der komplexen Darstellung bilden. 
-Die Berechnung der EIS weist ohne Korrektur (links) im niederfrequenten Bereich, das heißt mit hohem Realteil in der Impedanz, einen ausgeprägten Fehler auf. Hier wirkt sich der Amplitudengang des Modells aus. Der Fehler zeigt sich in einer sättigungsabhängigen Stauchung des Halbkreises im Nyquist-Plot. Für die Bereiche des Simulationsexperiments sind bis zu $10\%$ verfälschte Impedanzwerte aufgetreten. Dieser Fehler kann mit dem vorgeschlagenen Korrekturverfahren erheblich vermindert werden, er reduziert sich auf etwa $1\%$. 
+Die Berechnung der EIS weist ohne Korrektur (links) im niederfrequenten Bereich, das heißt mit hohem Realteil in der Impedanz, einen ausgeprägten Fehler auf. Hier wirkt sich der Amplitudengang des Modells aus. Der Fehler zeigt sich in einer sättigungsabhängigen Stauchung des Halbkreises im Nyquist-Plot. In der Simulation traten bis zu $10\%$ verfälschte Impedanzwerte auf. Dieser Fehler kann mit dem vorgeschlagenen Korrekturverfahren erheblich vermindert werden, er reduziert sich auf etwa $1\%$. 
 
 \smallskip
 Die Abb.~\ref{fig:Ergebnisse} (unten rechts) zeigt den prozentualen Sättigungsgrad in Abhängigkeit der Verstärkung der Spannung. Das Korrekturverfahren ist bei minimalem Sättigungsgrad nicht erforderlich. Es sollte dann nicht angewandt werden, weil es ggf. zu einem geringen zusätzlichen Fehler führen kann, siehe Abb.~\ref{fig:Ergebnisse} (unten links). 
 
-Eine statistische Analyse der Abtastwerte ist bereits in zur Steuerung der Vorverstärkung verwendet worden~\cite{Frahm-2023}. Die vorgestellte Methode zur Korrektur der Sättigung geht darüber hinaus, sie ist zunächst in Simulationsexperimenten untersucht worden. Das Verfahren wird gegenwärtig auf Mikrocontrollern im Rahmen der Entwicklung von Batteriezellsensoren umgesetzt. Das Gesamtziel des Forschungsprojekts liegt darin, gemeinsam mit Projektpartnern die elektrochemische Impedanzspektroskopie als Messmethode für große Fahrzeugbatterien in Elektrofahrzeugen verfügbar zu machen.
+Eine statistische Analyse der Abtastwerte ist bereits in zur Steuerung der Vorverstärkung verwendet worden~\cite{Frahm-2023}. Die vorgestellte Methode zur Korrektur der Sättigung geht darüber hinaus, sie ist zunächst in einer Simulation untersucht worden. Das Verfahren wird gegenwärtig auf Mikrocontrollern im Rahmen der Entwicklung von Batteriezellsensoren umgesetzt. Das Gesamtziel des Forschungsprojekts liegt darin, gemeinsam mit Projektpartnern die elektrochemische Impedanzspektroskopie als Messmethode für große Fahrzeugbatterien in Elektrofahrzeugen verfügbar zu machen.
 
 \section*{Förderung}
 Die Untersuchung entstand im Rahmen des Verbundprojekts ProMoBiS - "Progressive Multizell-Verbund-Konzepte für Batteriesysteme mit integrierter Sensorik". Das Forschungsprojekt wird vom Bundesministerium für Wirtschaft und Klimaschutz (BMWK) im Rahmen des 7. Energieforschungsprogramms (Förderkennzeichen 03ETE046G) im Bereich "\,Energiewende im Verkehr"\,gefördert und vom Projektträger Jülich betreut.
