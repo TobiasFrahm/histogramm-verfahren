@@ -82,7 +82,7 @@ xlabel("voltage [V]")
 ylabel("hits")
 title(["100 bins | 10k samples", "Varianz/Kurtosis: " + round(var(signal_sat_clean), 2) + " / " + round(kurtosis(signal_sat_clean), 2)])
 
-exportgraphics(fig, "img/beta-distribution.pdf")
+% exportgraphics(fig, "img/beta-distribution.pdf")
 %% Rauschen
 
 n_fig = n_fig + 1;
@@ -113,8 +113,7 @@ for ss = 1:length(snr)
     
 end
 
-exportgraphics(fig, "img/noise-histogramm.pdf")
-
+% exportgraphics(fig, "img/noise-histogramm.pdf")
 %% Fehler in der Amplitude durch Sättigung
 
 n_fig = n_fig + 1;
@@ -126,7 +125,7 @@ fft_clean = fft(signal/n_Samples);
 fft_clean = fft_clean(1:n_Samples/2+1);
 fft_clean(2:end-1) = 2*fft_clean(2:end-1);
 referenceampl = fft_clean(freq_idx);
-snr2 = linspace(40, 10, 800);
+snr2 = linspace(40, 5, 1000);
 
 seed = 1234;
 rng(seed);
@@ -161,32 +160,16 @@ grid on;
 xlabel("SNR [dB]")
 ylabel("Abweichung der Amplitude")
 title("10k sample | 10 periods | \alpha = " + round(abs(referenceampl), 2))
-legend("deviation")
+legend("Abweichung")
 % Create arrow
-annotation(fig,'arrow',[0.669642857142857 0.5875],...
-    [0.601380952380953 0.490476190476192]);
+annotation(fig,'arrow',[0.732142857142857 0.641071428571428],...
+    [0.447619047619048 0.390476190476191]);
 
 % Create textbox
 annotation(fig,'textbox',...
-    [0.636714285714284 0.600000000000001 0.249000000000001 0.0619047619047629],...
-    'String',{'0.1% Sättigungsgrad'},...
+    [0.65278571428571 0.44761904761905 0.245428571428576 0.0500000000000004],...
+    'String','0.1% Sättigungsgrad',...
     'FitBoxToText','off');
 
 
 exportgraphics(fig, "img/noise-err.pdf")
-%%
-
-% signal_sin1 = 1 * sin(2 * pi * freq * time);
-% 
-% R0 = 6e-3;
-% R1 = 4e-3;
-% C1 = 500e-3;
-% R2 = 4e-3;
-% C2 = 500e-3;
-% 
-% voltage = Transient_RRCRC(Fs, signal_sin1, R0, R1, C1, R2, C2);
-% plot(voltage);
-% hold on;
-% plot(signal_sin1);
-% legend
-% grid on;

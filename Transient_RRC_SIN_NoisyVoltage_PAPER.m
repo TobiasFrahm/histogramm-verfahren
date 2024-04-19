@@ -1,10 +1,8 @@
 % single current pulse to charge/discharge from a starting SoC
 % OCV curve is modelled in a very simple manner
-
 %%
 clear; clc; close all;
 %%
-
 freq_list = logspace(0, 4, 50);
 n_Freq = length(freq_list);
 
@@ -15,6 +13,7 @@ C1 = 500E-3;    % capacity, F
 
 %%
 nn = 17;
+
 %% noise
 snr = [80 ,linspace(40, -5, nn-1)];
 n_SNR = length(snr);
@@ -69,10 +68,9 @@ for ss=1:n_SNR
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % to simulate the measurement: add noise to current input
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%       
         current_clean = signal_to_sim;
         current = awgn(signal_to_sim, snr(ss));
-        % current = current_clean;
 
         % status
         disp("   " + ff + " / " + n_Freq + " | f = " + freq + " Hz | " + "SNR: " + snr(ss) + " dB")
@@ -147,10 +145,10 @@ for ss=1:n_SNR
             current_Measured_clean = current_Measured_clean * gain_Current + 1.65;
 
             % Quantization voltage & current
-            [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
-            [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
-            [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
-            [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
+            % [~,voltage_Measured] = quantiz(voltage_Measured, partition_Voltage, codebook_Voltage);
+            % [~,current_Measured] = quantiz(current_Measured, partition_Current, codebook_Current);
+            % [~,voltage_Measured_clean] = quantiz(voltage_Measured_clean, partition_Voltage, codebook_Voltage);
+            % [~,current_Measured_clean] = quantiz(current_Measured_clean, partition_Current, codebook_Current);
   
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,8 +168,6 @@ for ss=1:n_SNR
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % Do histogram and calculate values inside interval and outside
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             histo_Voltage = histogram(voltage_Measured,"BinEdges",signalMinVoltage:signalMaxVoltage/n_Bins:signalMaxVoltage);
-
             bin_edges = linspace(signalMinVoltage - signalMaxVoltage/n_Bins, signalMaxVoltage, n_Bins + 1);
             
             histo_Voltage_Counts{ss,gg,ff} = histcounts(voltage_Measured, bin_edges);
@@ -401,7 +397,7 @@ ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
 xlabel("Gain");
 ylabel("SNR [dB]");
-title("Datenpunkte in Sättigung [%]");
+title("Sättigungsgrad [%]");
 colorbar
 
 nexttile;
@@ -436,7 +432,7 @@ ax.XData = round(gain_V, 2);
 ax.YData = round(snr, 2);
 xlabel("Gain");
 ylabel("SNR [dB]");
-title(["Referenz", "Korrekturfaktor K_{n,g}"]);
+title(["Referenz - AKF"]);
 colorbar
 
 nexttile;
@@ -445,7 +441,7 @@ heatmap(imlut{ff});
 ax = gca;
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title("Korrekturfaktor K_{v,k,c}");
+title("AKF");
 xlabel("Gain");
 ylabel("SNR [dB]");
 colorbar
@@ -456,7 +452,7 @@ heatmap((imlut{ff}-sollamp{ff}));
 ax = gca;
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title("Differenz | K_{v,k,c} - K_{n,g}");
+title("Differenz");
 xlabel("Gain");
 ylabel("SNR [dB]");
 fontsize(gcf,7,"pixels")
@@ -479,7 +475,7 @@ for n = 0:0
     hold on
     for gg=1:1:n_gain_Voltage
         if gain_V(gg) < gain_max && gain_V(gg) > gain_min
-            plot(real(Z{cc,gg}(:)),-imag(Z{cc,gg}(:)), 'DisplayName',strcat("voltage gain " + gain_V(gg)), "Marker", 'x')
+            plot(real(Z{cc,gg}(:)),-imag(Z{cc,gg}(:)), 'DisplayName',strcat("Voltage Gain " + gain_V(gg)), "Marker", 'x')
         end
     end
     plot(real(Z2_clean{cc}(:)),-imag(Z2_clean{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
@@ -495,12 +491,12 @@ for n = 0:0
     hold on;
     for gg=1:n_gain_Voltage
         if gain_V(gg) < gain_max && gain_V(gg) > gain_min
-            plot(real(Z_corr{cc,gg}(:)),-imag(Z_corr{cc,gg}(:)),'x-', 'DisplayName',strcat("voltage gain " + gain_V(gg)))
+            plot(real(Z_corr{cc,gg}(:)),-imag(Z_corr{cc,gg}(:)),'x-', 'DisplayName',strcat("Voltage Gain " + gain_V(gg)))
         end
     end
     
     plot(real(Z2_clean{cc}(:)),-imag(Z2_clean{cc}(:)),'o--', 'DisplayName', 'No noise, no quantization etc.')
-    title("EIS (korrigiert) | SNR: " + snr(cc) + " dB")
+    title("EIS (AKF) | SNR: " + snr(cc) + " dB")
     xlabel('Real{Z_{k}} (\mu\Omega)')
     ylabel('Imag{Z_{k}} (\mu\Omega)')
     lg = legend;
@@ -510,11 +506,9 @@ for n = 0:0
     
     nexttile
     hold on
-    title("EIS (korrigiert)")
-    % rmse_max = rmse(Z{end,end}(:), Z2_clean{end}(:));
+    title("EIS (with AKF)")
     for ss=1:n_SNR
         for gg=1:n_gain_Voltage
-            % RMSE_Z2(ss, gg) = rmse(Z2{ss}(:), Z2_clean{ss}(:));
             RMSE_clean(ss, gg) = rmse(Z{ss,gg}(:), Z2_clean{ss}(:));
             RMSE_corr(ss, gg) = rmse(Z_corr{ss,gg}(:), Z2_clean{ss}(:));
         end
@@ -524,16 +518,8 @@ for n = 0:0
         end
     end
     semilogy(gain_V, RMSE_clean(1, :), 'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth',1)
-    % plot(gain_V, RMSE_corr(1, :), 'o-', 'DisplayName', "Referenz@" + string(snr(ss)) + " dB" )
     
-    % plot(gain_V,RMSE, 'o-', 'DisplayName','RMSE')
-    % plot(gain_V, RMSE_corr, 'x-', 'DisplayName','RMSE - Korrektur')
-    % plot(gain_V, RME_clean, 'o-', 'DisplayName', "Referenz SNR = " +
-    % string(snr(1)) + " dB")
-
-    % plot(gain_V(7),RMSE(7), 'x', 'HandleVisibility', 'off')
-    
-    xlabel('Voltage gain')
+    xlabel('Voltage Gain')
     ylabel('RMSE (\mu\Omega)')
     title("RMSE")
     lg = legend;
@@ -557,10 +543,9 @@ for n = 0:0
     end
     plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth', 1)
     
-    % title("Cuttoffvaules vs. Gain")
-    xlabel('Voltage gain')
-    ylabel('Cutoff values (<0V or >3.3V) (%)')
-    title("Cutoff values")
+    xlabel('Voltage Gain')
+    ylabel('Cutoff Values (<0V or >3.3V) (%)')
+    title("Cutoff Values")
     lg = legend;
     lg.Location = 'northoutside';
     lg.NumColumns = 2;
