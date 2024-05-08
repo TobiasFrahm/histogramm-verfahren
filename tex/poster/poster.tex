@@ -1,0 +1,240 @@
+\input{EINST/einst.tex} 
+\pdfminorversion=7
+\usepackage{amsmath}
+%\renewcommand\bibname{Reference}
+\newcommand{\pos}{\ensuremath{\boldsymbol{\mathrm{r}}}}
+\newcommand{\absP}{\ensuremath{r}}
+\newcommand{\mM}{\ensuremath{\boldsymbol{\mathrm{\mu}}}}
+\newcommand{\magB}{\ensuremath{\boldsymbol{\mathrm{B}}}}
+\usepackage{setspace}
+\usepackage{subfigure}
+\usepackage{nicefrac}
+\usepackage{xfrac}
+%\newcommand{\texSF}[1]{\begin{Large}{\sf #1}\end{Large}}
+\newcommand{\texSF}[1]{\begin{Large}{\sf #1}\end{Large}}
+\usepackage{booktabs} 
+%\usepackage{cite} 
+\newcommand{\figw}[4]{\begin{figurehere}\centering\ffigbox{\includegraphics[width=#1\textwidth]{#2}}{\caption{\sf #3}\label{fig:#4}}\end{figurehere}}
+\newcommand{\figwH}[2]{\begin{figurehere}\centering\ffigbox{\includegraphics[width=#1\textwidth]{#2}}{}\end{figurehere}}
+\usepackage{caption} 
+\captionsetup{font={sf},labelfont=sf,textfont=sf}
+\renewcommand{\thesubfigure}{\alph{subfigure})}% (a) -> a
+
+\definecolor{known}{RGB}{0,0,192}
+\definecolor{search}{RGB}{00,192,0}
+\definecolor{unknown}{RGB}{192,0,0}
+\definecolor{HAW}{RGB}{30,81,164}
+
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{shadows}
+\newmdenv[tikzsetting={draw=black,fill=white},
+roundcorner=18pt,shadow=false]{mdboxshad}
+\mdfsetup{%
+	middlelinewidth=1pt
+}
+
+\newcommand{\tbltex}[1]{{\sffamily\large{\textbf{#1}}}}
+\newcommand{\tblit}[1]{\textsf{\itshape{#1}}}
+
+%\bibliography{Bibliography/literatur.bib}
+\addbibresource{Bibliography/literatur.bib}
+\usepackage{wallpaper}
+\usepackage{mdframed} 
+\usepackage[none]{hyphenat}
+\begin{document}
+	\singlespacing \large \sffamily
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Kopf, hier funktioniert alles mit 'put'
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%\parbox{\textwidth}
+	%{
+		% , ,  and Karl-Ragmar Riemschneider
+		\cornersize*{5mm}
+		%\ThisLRCornerWallPaper{1.0}{poster_hintergrund/BGflo.pdf}
+		%\ThisLRCornerWallPaper{1.0}{poster_hintergrund/BG_Kacheln.pdf}
+		%  \begin{flushleft}
+			\vspace*{.5cm} 
+			\hspace{-20mm}
+			\begin{tablehere}
+				%		\def\arraystretch{0.5}
+				\setlength{\tabcolsep}{1cm}
+				\begin{tabular}{llll}  
+					\multicolumn{4}{l}{\huge\textsf{\textbf{\color{HAW}Histogramm-Verfahren für die Signalaussteuerung bei der}}}\vspace*{.5cm}\\ 
+					\multicolumn{4}{l}{\huge\textsf{\textbf{\color{HAW}Impedanzspektroskopie für Fahrzeugbatterien}}}\\[10mm]
+					\tbltex{Tobias Frahm} & \tbltex{Florian Rittweger} & \tbltex{Thorben Schüthe} & \tbltex{Karl-Ragmar Riemschneider} \\ 
+					\multicolumn{4}{l}{\tblit{\{tobias.frahm, florian.rittweger, thorben.schuethe, karl-ragmar.riemschneider\}@haw-hamburg.de}} \\ 
+					\multicolumn{4}{l}{\tblit{Fakultät Technik und Informatik -- Hochschule für Angewandte Wissenschaften Hamburg}}\\
+				\end{tabular}
+			\end{tablehere}	     
+			%  \end{flushleft}  
+		\hfill \includegraphics[height=40mm]{poster_hintergrund/logo_haw.pdf}
+		
+		\linethickness{0.1mm} 
+		%\begin{mdboxshad}
+		%	Inside a traction battery of electric vehicles are typically more than hundred single battery cells. These cells are monitored with various sensors to increase the operational safety and improve performance, e.g. range extension, fast-charging or service life.
+		%	Up to now, a typical set of sensors fulfills the measurement of current, voltage and temperature. For future concepts, the electrochemical impedance spectroscopy [9,12], a reference electrode [32] and further sensors, e.g. fiber optical sensors [33,34] are under development. Thereby, the interaction of proven and novel sensors leads to an intelligent battery system based on a sensor network with new requirements for data communication and structuring [1]. For instance, the electrochemical impedance spectroscopy, which provides a particularly good indication of the condition of the cell states usually requires high data rates and a very precise synchronization of data sampling. The architecture of the communication system must ensure this for more than a hundred network nodes.
+		%	Thus, we present a solution for sensor data communication based on an optical transmission medium without any optical fiber. Instead we use a simple transparent plastic component, which can be integrated in the battery package.
+		%\end{mdboxshad} 
+		
+		\vfill
+		
+		%\setlength{\fboxrule}{2.25mm}  
+		%=================================
+		\begin{multicols}{2}
+			\captionsetup{format=plain} 
+			\parindent0mm
+			%=================================
+			
+			\begin{mdboxshad}
+				{\textbf{Motivation: }In Elektrofahrzeugen der nächsten Generation soll auch das Batterie-Management-System (BMS) weiter verbessert werden. Zu diesem Zweck gibt es das Bestreben, die im Labor etablierte Methode der Elektrochemischen Impedanzspektroskopie (EIS) einzusetzen. Mithilfe der EIS lassen sich wertvolle Informationen über den Zustand der Batteriezelle ableiten, hierzu gehören der aktuelle Ladezustand, die Zellalterung, die Leistungsprädiktion und die Innentemperatur~\cite{Schmidt-2013, Kohs-2022}. Im Fahrzeug werden die Batteriezellen mit niederfrequenten Wechselströmen angeregt, die an jeder Batteriezelle eine Spannungsantwort erzeugen~\cite{KeilJossen-2012, Roscher-2016, Hammerschmidt-2016, Roscher-2015}. Aus dem Wechselstrom und der Spannungsantwort wird die Impedanz für ein Spektrum von Anregungsfrequenzen errechnet. In Elektrofahrzeugen werden Batteriezellen mit sehr geringem Innenwiderstand bis unter einem Milliohm eingesetzt. Zudem ist der Anregestrom aus Gründen der verfügbaren Energie und des Schaltungsaufwands limitiert. Für die Wechselströme zur Anregung wird eingeschätzt, dass der Bereich zwischen $\SI{1}{A}$ und $\SI{10}{A}$ umsetzbar ist. Infolgedessen liegen die Spannungsantworten in der Größenordnung von $\SI{1}{mV}$. Sie sind mindestens prozentgenau zu erfassen, d.~h. auf sieben Bit oder mehr digital aufzulösen. Der ADC benötigt hierfür einen analogen Vorverstärker. Weil Vorverstärkungsfaktoren in der Größenordnung von 1000 mitunter erforderlich sind, werden unter Praxisbedingungen starke Stör- und Rauscheinflüsse auftreten. Die Verstärkungsfaktoren sind nur mit einer begrenzter Stufenzahl einstellbar. In der Gesamtheit führt das zu einem Zielkonflikt. Entweder wird auf Signalauflösung verzichtet oder es wird ein Fehler durch teilweise Übersteuerung des ADC unvermeidbar. Diese gegensätzliche Problematik besteht auch in anderen Anwendungen~\cite{Abel-1991,Ting-2013, Zhou-2019, Chan-2012} und ist der Ausgangspunkt für den nachfolgend vorgestellten Lösungsansatz.}
+			
+				%==================================
+%				\vspace*{5mm}
+%				\begin{figurehere} 
+%					\ffigbox{\includegraphics[width=0.7\columnwidth]{../../img/beta-distribution}}{\caption{Geometric parameters of a bolted joint.}\label{fig:rod}}	 
+%				\end{figurehere} 
+			\end{mdboxshad} 
+\vspace{10mm}
+
+			\begin{mdboxshad}
+				{\textbf{Statistische Auswertung des Signals} erfolgt mithilfe der Auswertung der stochastischen Momente des Histogramms. Die stochastischen Momente werden verwendet, um Rückschluss auf die Signalqualität zu ziehen.
+				Die Abbildung~\ref{fig:histo} zeigt die Verteilung der Datenpunkte im Quantisierungsraum des Analog-Digital-Wandlers (ADC). Bei verschiedenen Signalzuständen. Der Einfluss von Rauschen und Verstärkung ist  in der Verteilung deutlich zu erkennen.}
+				\hspace*{2mm}
+				\begin{center}
+					\begin{figurehere}
+						\includegraphics[width=0.45\columnwidth]{../../img/beta-distribution}~~~~~
+						\includegraphics[width=0.45\columnwidth]{../../img/noise-histogramm}
+						\caption{Die linken Histogramme werden durch rauschfreie Signale mit verschiedener Amplitude erzeugt. Dabei werden unterschiedliche Sättigungsgrade dargestellt. Die rechten Histogramme zeigen verschiedene Rauschverhältnisse bei konstanter Amplitude.}
+						\label{fig:histo}	 
+					\end{figurehere}
+				\end{center}
+
+			
+				{\textbf{Ermittlung der Korrekturfaktoren} Der Zusammenhang der Korrekturfaktoren zeigt sich über den Störabstand und der Verstärkung des Signals mit den drei angeführten Größen: 
+					\begin{itemize}
+						\item Sättigungsgrad als Anteil der Datenpunkte in der Sättigung des ADC
+						\item Varianz der Verteilung der Abtastwerte\footnote[1]{Nicht berücksichtigt werden Abtastwerte in der Sättigung des ADC.\label{foot:bereinigt}}
+						\item Kurtosis der Verteilung der Abtastwerte\footref{foot:bereinigt}
+					\end{itemize}
+					Der Dynamikbereich des ADC ist in $b$ Stufen aufgelöst. Jeder Abtastpunkte kann in einem Histogramm einer Klasse $h_i$ zugeordnet werden, wobei $b \leq i$ ist. Der Sättigungsgrad ergibt sich aus der Anzahl der Abtastpunkte $n_0$ und $n_b$ in den äußersten Klassen $h_0$ und $h_b$ des Histogramms nach Gl.~\eqref{eq:dist_sat}.
+					
+					\begin{equation}
+						\label{eq:dist_sat}
+						c = \frac{n_0 + n_b}{n} \cdot 100
+					\end{equation}
+				}
+				
+			\end{mdboxshad} 
+			\vspace{10mm}
+			\begin{mdboxshad}
+				{\textbf{A New Method} seems to be promising for test bench as well as for typical assembly case. Experiments will be described which assume the bolt to be a torsion spring and infer the assembly preload from the torsion angle \Ator. 
+					
+					The table~\ref{tbl:torsionswinkel} shows examples of the torsion angle of various bolt types and clamping lengths at the maximum allowed assembly preload for class {8.8} carbon steel~\cite{VDI2230}. Only a small torsion angle \Ator occurs during the assembly process. The required accuracy of the angle measurement is therefore a metrological challenge.
+				}
+				
+				\begin{tabular}{m{0.4\columnwidth}m{0.56\columnwidth}}  
+					{\begin{align*}
+							\Ator &= \dfrac{\tors\,\lenk}{\radi\,\Gs} \\
+							\tors&=\MG/\Wp \\
+							\Wp &= \dfrac{\pi}{16}\,\ds^3= \frac{\pi}{16}\,\left(\frac{\dtwo+\dthree}{2}\right)^3
+					\end{align*}}
+					& 
+					{\begin{tablehere}
+							\fontsize{28pt}{28pt}\selectfont
+							\centering\sisetup{round-mode=places,round-precision=2}
+							\caption{Torsion angle $\Ator(\lenk)$ for different types of bolts. }
+							\label{tbl:torsionswinkel}
+							\begin{tabular}{lr|rrrrr}
+								\toprule
+								Size &\Fv (kN)   & \multicolumn{5}{c}{\lenk (mm)}  \\ \cmidrule{3-7}
+								&  &  \num{60} & \num{80} & \num{100} & \num{120} & \num{140} \\\midrule  
+								%		M6&\num{9.900}& \SI{3.30011992434034}{\degree}& \SI{4.40015989912045}{\degree}& \SI{5.50019987390057}{\degree}& \SI{6.60023984868068}{\degree}& \SI{7.70027982346079}{\degree}\\
+								M8&\num{18.100}&\SI{2.42850243920120}{\degree}& \SI{3.23800325226826}{\degree}& \SI{4.04750406533533}{\degree}& \SI{4.85700487840239}{\degree}& \SI{5.66650569146946}{\degree}\\
+								%		M10&\num{28.800}& \SI{1.92407561901485}{\degree}& \SI{2.56543415868646}{\degree}& \SI{3.20679269835808}{\degree}& \SI{3.84815123802969}{\degree}& \SI{4.48950977770131}{\degree}\\
+								M12&\num{41.900}&  \SI{1.58924175079352}{\degree}& \SI{2.11898900105803}{\degree}& \SI{2.64873625132253}{\degree}& \SI{3.17848350158704}{\degree}& \SI{3.70823075185155}{\degree}\\
+								M16&\num{78.800}&  \SI{1.14906282917003}{\degree}& \SI{1.53208377222670}{\degree}& \SI{1.91510471528338}{\degree}& \SI{2.29812565834005}{\degree}& \SI{2.68114660139673}{\degree}\\
+								\bottomrule 
+							\end{tabular}
+					\end{tablehere}}	 	
+				\end{tabular} 
+			\end{mdboxshad}  
+			\columnbreak  
+			\begin{mdboxshad}
+				%=================================  
+				{\textbf{The test bench} contains an optical and magnetic system for measuring the torsion angle, see figure~\ref{fig:AnsichtKomplett}. The head of the bolt is fixed so that the mounting is done via the screw nut with a digital torque wrench~\cite{SCS_torque}. An attachment with a mirror and a magnet at the end of the thread serves as an encoder for the measuring methods. The accuracy of the optical method can be increased by the distance between the mirror and the projection plane and is suitable for test bench. The magnetic method uses a sensor array of 64 angle sensors in an 8x8 arrangement to achieve high accuracy~\cite{stud_mehm}. This method is suitable for the test bench and typical mounting cases. 
+				}
+				
+				%================================== 
+				\vspace*{5mm}
+				\begin{figurehere} 
+					\ffigbox{\includegraphics[width=.99\columnwidth]{IMG/AufbauPoster2p-crop.pdf}}{\caption{Overview of the entire design structure of test bench.\hfill ~~~~~~~~~~~~~~~~~~~~~~~~~~~}\label{fig:AnsichtKomplett}}	 
+				\end{figurehere} 
+			\end{mdboxshad} 
+\vspace{10mm}
+			\begin{mdboxshad}
+				\textbf{The Torsion Angle} of a M8x160 bolt with a full thread is used for verification. 
+%				The bolt has a length of 160\,mm, a clamping length of 128\,mm and is tightened with a torque of 27\,Nm. 
+				The optically and magnetically measured torsion angle shows a well matching course, Fig.~\ref{fig:winkelfehler_differenz}. The deviation of the two methods has a maximum value of {0.35}\si{\degree}. Before and after the tightening process, a difference of {0.2}\si{\degree} can be seen. Both methods show similar precision.
+				%\begin{itemize}
+				%	\setlength{\itemsep}{0mm} 
+				%	\item Measure the torional angle with optical and magnetic system
+				%	\item Compare between measurement results
+				%	\item Difference shows a deviation of about \SI{0,2}{\degree} in static and less then \SI{0,4}{\degree} in the tightening process
+				%\end{itemize} 
+				
+				\begin{figurehere}
+					% first image
+					{\includegraphics[height=12cm]{IMG/abs_ang_posterp-crop.pdf}}\hfill
+					% second image
+					{\includegraphics[height=12cm]{IMG/diff_posterp-crop.pdf}} 
+					%	\subfigure[Assembly preload as a function of the torsion angle.\label{fig:fm}]{\includegraphics[width=0.47\columnwidth]{IMG/result/build/Kraftmessung.pdf}}
+					\vspace{-5mm}\caption{Left: Torsion angle of optical and magnetic methods. Right: Deviation of the methods.}
+					\label{fig:winkelfehler_differenz}
+				\end{figurehere} 
+				
+				\begin{figurehere} 
+					\begin{tabular}{m{0.48\columnwidth}m{0.021\columnwidth}m{0.48\columnwidth}} 
+						\textbf{The Assembly Preload} is recorded with a hydraulic load cell for verification~\cite{HKM_Kraftmessdose}. Figure~\ref{fig:kraftmessung} shows the measured values of a test. The assembly preload increases over the duration of the assembly process. The same applies to the torsion angle measured magnetically. For verification purposes, the assembly preload is plotted against the torsion angle. The expected linear relationship can be observed in a first approximation. 
+						&&  \raisebox{-\totalheight}{\includegraphics[width=0.98\linewidth]{IMG/Kraftmessungp-crop.pdf}}\caption{Assembly preload as function of torsion angle.}\label{fig:kraftmessung}\\ 
+					\end{tabular}  
+				\end{figurehere} 
+			\vspace{-10mm}
+			\end{mdboxshad} 
+\vspace{10mm}
+			\begin{mdboxshad}
+				{The magnetic sensor array improves measurement accuracy and will be able to meet future requirements. First test results confirm the correlation between torsion angle and assembly preload. The test bench is the base to start a development of an assembly tool in which the sensor array and the evaluation electronics are integrated, see figure~\ref{fig:vorschlag_werkzeug}. This should be suitable for monitoring practical assembly processes. The main advantage is expected in overcoming the uncertain friction estimation in conventional torque measurement. A combination of torque and torsion measurement is particularly promising.} 
+				\begin{center}
+					\begin{figurehere} 
+						% \fbuild{\fw{Breite}{FILE.pdf}}{\fw{Breite}{FILE.tikz}} % if tikz and pdf file available
+						\includegraphics[width=0.48\linewidth]{IMG/tool3p-crop.pdf}
+						\includegraphics[width=0.48\linewidth]{IMG/diffToolp-crop.pdf}
+						\caption{Proposal for the design of a tool to measure the torsion via a circular magnetic sensor array.
+							\vspace*{-3mm}} 
+						\label{fig:vorschlag_werkzeug}
+					\end{figurehere} 
+				\end{center}
+			\end{mdboxshad} 
+			\vfill
+			\begin{mdboxshad}
+				%\fontsize{26pt}{26pt}\selectfont
+				\textbf{Förderung} Die Untersuchung entstand im Rahmen des Verbundprojekts 				ProMoBiS - "Progressive Multizell-Verbund-Konzepte für Batteriesysteme mit integrierter
+				Sensorik". Das Forschungsprojekt wird vom Bundesministerium für Wirtschaft
+				und Klimaschutz (BMWK) im Rahmen des 7. Energieforschungsprogramms (Förderkennzeichen
+				03ETE046G) im Bereich " Energiewende im Verkehr" gefördert und vom Projektträger Jülich
+				betreut.
+			\end{mdboxshad} 
+		\end{multicols}
+		%\vfill
+		%\par\noindent\rule{\textwidth}{0.4pt}
+%		\vspace{-10mm}
+		
+		\vfill
+%		\begin{multicols}{3}
+%			\captionsetup{format=plain} 
+%			\parindent0mm
+%			\renewcommand*{\bibfont}{\fontsize{16pt}{16pt}\selectfont}
+%			\selectlanguage{ngerman} 
+%			\printbibliography
+%		\end{multicols} 
+		%\clearpage
+	\end{document}
