@@ -127,92 +127,22 @@ roundcorner=18pt,shadow=false]{mdboxshad}
 			\end{mdboxshad} 
 			\vspace{10mm}
 			\begin{mdboxshad}
-				{\textbf{A New Method} seems to be promising for test bench as well as for typical assembly case. Experiments will be described which assume the bolt to be a torsion spring and infer the assembly preload from the torsion angle \Ator. 
-					
-					The table~\ref{tbl:torsionswinkel} shows examples of the torsion angle of various bolt types and clamping lengths at the maximum allowed assembly preload for class {8.8} carbon steel~\cite{VDI2230}. Only a small torsion angle \Ator occurs during the assembly process. The required accuracy of the angle measurement is therefore a metrological challenge.
-				}
 				
-				\begin{tabular}{m{0.4\columnwidth}m{0.56\columnwidth}}  
-					{\begin{align*}
-							\Ator &= \dfrac{\tors\,\lenk}{\radi\,\Gs} \\
-							\tors&=\MG/\Wp \\
-							\Wp &= \dfrac{\pi}{16}\,\ds^3= \frac{\pi}{16}\,\left(\frac{\dtwo+\dthree}{2}\right)^3
-					\end{align*}}
-					& 
-					{\begin{tablehere}
-							\fontsize{28pt}{28pt}\selectfont
-							\centering\sisetup{round-mode=places,round-precision=2}
-							\caption{Torsion angle $\Ator(\lenk)$ for different types of bolts. }
-							\label{tbl:torsionswinkel}
-							\begin{tabular}{lr|rrrrr}
-								\toprule
-								Size &\Fv (kN)   & \multicolumn{5}{c}{\lenk (mm)}  \\ \cmidrule{3-7}
-								&  &  \num{60} & \num{80} & \num{100} & \num{120} & \num{140} \\\midrule  
-								%		M6&\num{9.900}& \SI{3.30011992434034}{\degree}& \SI{4.40015989912045}{\degree}& \SI{5.50019987390057}{\degree}& \SI{6.60023984868068}{\degree}& \SI{7.70027982346079}{\degree}\\
-								M8&\num{18.100}&\SI{2.42850243920120}{\degree}& \SI{3.23800325226826}{\degree}& \SI{4.04750406533533}{\degree}& \SI{4.85700487840239}{\degree}& \SI{5.66650569146946}{\degree}\\
-								%		M10&\num{28.800}& \SI{1.92407561901485}{\degree}& \SI{2.56543415868646}{\degree}& \SI{3.20679269835808}{\degree}& \SI{3.84815123802969}{\degree}& \SI{4.48950977770131}{\degree}\\
-								M12&\num{41.900}&  \SI{1.58924175079352}{\degree}& \SI{2.11898900105803}{\degree}& \SI{2.64873625132253}{\degree}& \SI{3.17848350158704}{\degree}& \SI{3.70823075185155}{\degree}\\
-								M16&\num{78.800}&  \SI{1.14906282917003}{\degree}& \SI{1.53208377222670}{\degree}& \SI{1.91510471528338}{\degree}& \SI{2.29812565834005}{\degree}& \SI{2.68114660139673}{\degree}\\
-								\bottomrule 
-							\end{tabular}
-					\end{tablehere}}	 	
-				\end{tabular} 
 			\end{mdboxshad}  
 			\columnbreak  
 			\begin{mdboxshad}
-				%=================================  
-				{\textbf{The test bench} contains an optical and magnetic system for measuring the torsion angle, see figure~\ref{fig:AnsichtKomplett}. The head of the bolt is fixed so that the mounting is done via the screw nut with a digital torque wrench~\cite{SCS_torque}. An attachment with a mirror and a magnet at the end of the thread serves as an encoder for the measuring methods. The accuracy of the optical method can be increased by the distance between the mirror and the projection plane and is suitable for test bench. The magnetic method uses a sensor array of 64 angle sensors in an 8x8 arrangement to achieve high accuracy~\cite{stud_mehm}. This method is suitable for the test bench and typical mounting cases. 
-				}
-				
-				%================================== 
-				\vspace*{5mm}
-				\begin{figurehere} 
-					\ffigbox{\includegraphics[width=.99\columnwidth]{IMG/AufbauPoster2p-crop.pdf}}{\caption{Overview of the entire design structure of test bench.\hfill ~~~~~~~~~~~~~~~~~~~~~~~~~~~}\label{fig:AnsichtKomplett}}	 
-				\end{figurehere} 
+			
 			\end{mdboxshad} 
 \vspace{10mm}
 			\begin{mdboxshad}
-				\textbf{The Torsion Angle} of a M8x160 bolt with a full thread is used for verification. 
-%				The bolt has a length of 160\,mm, a clamping length of 128\,mm and is tightened with a torque of 27\,Nm. 
-				The optically and magnetically measured torsion angle shows a well matching course, Fig.~\ref{fig:winkelfehler_differenz}. The deviation of the two methods has a maximum value of {0.35}\si{\degree}. Before and after the tightening process, a difference of {0.2}\si{\degree} can be seen. Both methods show similar precision.
-				%\begin{itemize}
-				%	\setlength{\itemsep}{0mm} 
-				%	\item Measure the torional angle with optical and magnetic system
-				%	\item Compare between measurement results
-				%	\item Difference shows a deviation of about \SI{0,2}{\degree} in static and less then \SI{0,4}{\degree} in the tightening process
-				%\end{itemize} 
-				
-				\begin{figurehere}
-					% first image
-					{\includegraphics[height=12cm]{IMG/abs_ang_posterp-crop.pdf}}\hfill
-					% second image
-					{\includegraphics[height=12cm]{IMG/diff_posterp-crop.pdf}} 
-					%	\subfigure[Assembly preload as a function of the torsion angle.\label{fig:fm}]{\includegraphics[width=0.47\columnwidth]{IMG/result/build/Kraftmessung.pdf}}
-					\vspace{-5mm}\caption{Left: Torsion angle of optical and magnetic methods. Right: Deviation of the methods.}
-					\label{fig:winkelfehler_differenz}
-				\end{figurehere} 
-				
-				\begin{figurehere} 
-					\begin{tabular}{m{0.48\columnwidth}m{0.021\columnwidth}m{0.48\columnwidth}} 
-						\textbf{The Assembly Preload} is recorded with a hydraulic load cell for verification~\cite{HKM_Kraftmessdose}. Figure~\ref{fig:kraftmessung} shows the measured values of a test. The assembly preload increases over the duration of the assembly process. The same applies to the torsion angle measured magnetically. For verification purposes, the assembly preload is plotted against the torsion angle. The expected linear relationship can be observed in a first approximation. 
-						&&  \raisebox{-\totalheight}{\includegraphics[width=0.98\linewidth]{IMG/Kraftmessungp-crop.pdf}}\caption{Assembly preload as function of torsion angle.}\label{fig:kraftmessung}\\ 
-					\end{tabular}  
-				\end{figurehere} 
+			
+			
+
 			\vspace{-10mm}
 			\end{mdboxshad} 
 \vspace{10mm}
 			\begin{mdboxshad}
-				{The magnetic sensor array improves measurement accuracy and will be able to meet future requirements. First test results confirm the correlation between torsion angle and assembly preload. The test bench is the base to start a development of an assembly tool in which the sensor array and the evaluation electronics are integrated, see figure~\ref{fig:vorschlag_werkzeug}. This should be suitable for monitoring practical assembly processes. The main advantage is expected in overcoming the uncertain friction estimation in conventional torque measurement. A combination of torque and torsion measurement is particularly promising.} 
-				\begin{center}
-					\begin{figurehere} 
-						% \fbuild{\fw{Breite}{FILE.pdf}}{\fw{Breite}{FILE.tikz}} % if tikz and pdf file available
-						\includegraphics[width=0.48\linewidth]{IMG/tool3p-crop.pdf}
-						\includegraphics[width=0.48\linewidth]{IMG/diffToolp-crop.pdf}
-						\caption{Proposal for the design of a tool to measure the torsion via a circular magnetic sensor array.
-							\vspace*{-3mm}} 
-						\label{fig:vorschlag_werkzeug}
-					\end{figurehere} 
-				\end{center}
+				
 			\end{mdboxshad} 
 			\vfill
 			\begin{mdboxshad}

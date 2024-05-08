@@ -401,7 +401,7 @@ ax = gca;
 colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-xlabel("Gain");
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
 title("Sättigungsgrad [%]");
 colorbar
@@ -412,8 +412,8 @@ ax = gca;
 colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title(["Signalvarianz", "ohne Datenpunkte in Sättigung"]);
-xlabel("Gain");
+title(["Varianz", "ohne Abtastpunkte in Sättigung"]);
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
 colorbar
 
@@ -423,50 +423,58 @@ ax = gca;
 colormap(ax, cm);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title(["Signalkurtosis", "ohne Datenpunkte in Sättigung"]);
-xlabel("Gain");
+title(["Kurtosis", "ohne Abtastpunkte in Sättigung"]);
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
 colorbar
 
+cm = colormap(parula);
+cmq=cm;
+% cmq(:,3) = power(cm(:,3), 2);
+% cmq(1,:) =  [0. 0. 0.];
+% cmq(2,:) =  [0.05 0.05 0.3];
+% cmq(3,:) =  [0.05 0.05 0.4];
+% cmq(:,1) = log(1+ cm(:,1))%.^(2);
+% cmq(:,3) = power(cm(:,3), 1/4);
 
 nexttile;
 h = heatmap(sollamp{ff});
 h.CellLabelFormat = "%.4f";
-h.ColorScaling = 'scaledrows';
-% h.ColorLimits = [0 max(max(sollamp{ff}))];
+% h.ColorScaling = 'scaledrows';
 ax = gca;
-colormap(ax, cm);
+colormap(ax, cmq);
 ax.XData = round(gain_V, 2);
 ax.YData = round(snr, 2);
-xlabel("Gain");
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
-title("Referenz - AKF (normiert)");
-colorbar
+title("Referenz");
+
 
 nexttile;
 h = heatmap(imlut{ff});
 h.CellLabelFormat = "%.2f";
 ax = gca;
-h.ColorScaling = 'scaledrows';
-% h.ColorLimits = [0 max(max(imlut{ff}))];
-colormap(ax, cm);
+% h.ColorScaling = 'scaledrows';
+% h.ColorLimits = [1 1.7];
+% h.ColorbarVisible = 'off';
+
+colormap(ax, cmq);
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
-title("AKF (normiert)");
-xlabel("Gain");
+title("AKF ");
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
-colorbar
+
 
 nexttile;
 h = heatmap((imlut{ff}-sollamp{ff}));
 h.CellLabelFormat = "%.2f";
-% h.ColorScaling = 'scaledrows';
 h.Colormap = sky;
 ax = gca;
 ax.YData = round(snr, 2);
 ax.XData = round(gain_V, 2);
 title("Differenz");
-xlabel("Gain");
+xlabel("Verstärkung");
 ylabel("SNR [dB]");
 fontsize(gcf,7,"pixels")
 colorbar
@@ -532,7 +540,7 @@ for n = 0:0
     end
     semilogy(gain_V, RMSE_clean(1, :), 'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth',1)
     
-    xlabel('Voltage Gain')
+    xlabel('Verstärkung')
     ylabel('RMSE (\mu\Omega)')
     title("RMSE")
     lg = legend;
@@ -556,9 +564,9 @@ for n = 0:0
     end
     plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth', 1)
     
-    xlabel('Voltage Gain')
-    ylabel('Cutoff Values (<0V or >3.3V) (%)')
-    title("Cutoff Values")
+    xlabel('Verstärkung')
+    ylabel('Sättigungsgrad (<0V or >3.3V) (%)')
+    title("Sättigungsgrad")
     lg = legend;
     lg.Location = 'northoutside';
     lg.NumColumns = 2;
