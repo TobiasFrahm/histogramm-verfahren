@@ -15,7 +15,7 @@ C1 = 500E-3;    % capacity, F
 nn = 17;
 
 %% noise
-snr = [80 ,linspace(40, -5, nn-1)];
+snr = [40 ,linspace(40, 0, nn-1)];
 n_SNR = length(snr);
 snr_fokus = 5;
 noise_fit_cutoff = 2.0;
@@ -482,7 +482,7 @@ exportgraphics(gcf, "img/lut.pdf")
 %% EIS Plot
 figure(4)
 
-tiledlayout('flow', 'TileSpacing','compact','Padding','compact')
+tiledlayout(1,2,"TileSpacing","tight","Padding","tight")
 
 gain_max = 185;
 gain_min = 155;
@@ -505,7 +505,8 @@ for n = 0:0
     ylabel('Imag{Z} (\mu\Omega)')
     lg = legend;
     lg.Location = 'northoutside';
-    lg.NumColumns = 2;
+    lg.NumColumns = 3;
+    fontsize(gcf,20,"pixels")
     grid on; box on
     
     nexttile
@@ -522,55 +523,122 @@ for n = 0:0
     ylabel('Imag{Z_{k}} (\mu\Omega)')
     lg = legend;
     lg.Location = 'northoutside';
-    lg.NumColumns = 2;
+    lg.NumColumns = 3;
+    fontsize(gcf,20,"pixels")
     grid on; box on
     
-    nexttile
-    hold on
-    title("EIS (with AKF)")
-    for ss=1:n_SNR
-        for gg=1:n_gain_Voltage
-            RMSE_clean(ss, gg) = rmse(Z{ss,gg}(:), Z2_clean{ss}(:));
-            RMSE_corr(ss, gg) = rmse(Z_corr{ss,gg}(:), Z2_clean{ss}(:));
-        end
-        if snr(ss) < snr_max && snr(ss) > snr_min
-            semilogy(gain_V, RMSE_corr(ss, :), 'x-', 'DisplayName', "Korrigiert@" + string(snr(ss)) + " dB" )
-            semilogy(gain_V, RMSE_clean(ss, :), 'DisplayName', "Referenz@" + string(snr(ss)) + " dB" )
-        end
-    end
-    semilogy(gain_V, RMSE_clean(1, :), 'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth',1)
-    
-    xlabel('Verstärkung')
-    ylabel('RMSE (\mu\Omega)')
-    title("RMSE")
-    lg = legend;
-    set(gca, 'YScale', 'log')
-    lg.Location = 'northoutside';
-    lg.FontSize = 4;
-    lg.NumColumns = 2;
-    grid on; box on
-    hold off
-
-    nexttile
-    hold on
-    for ss=1:n_SNR
-        for gg=1:n_gain_Voltage
-            cutoff_values_Voltage_percent_plot(ss,gg) = cutoff_values_Voltage_percent{ss,gg}(1);
-            cutoff_values_Voltage_percent_plot_clean(ss,gg) = cutoff_values_Voltage_percent_clean{ss,gg}(1);
-        end
-        if snr(ss) < snr_max && snr(ss) > snr_min
-            plot(gain_V, cutoff_values_Voltage_percent_plot(ss,:),'x-', 'DisplayName', strcat("SNR = " + snr(ss)+ " dB"))
-        end 
-    end
-    plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth', 1)
-    
-    xlabel('Verstärkung')
-    ylabel('Sättigungsgrad (<0V or >3.3V) (%)')
-    title("Sättigungsgrad")
-    lg = legend;
-    lg.Location = 'northoutside';
-    lg.NumColumns = 2;
-    fontsize(gcf,7,"pixels")
-    grid on; box on
+    % nexttile
+    % hold on
+    % title("EIS (with AKF)")
+    % for ss=1:n_SNR
+    %     for gg=1:n_gain_Voltage
+    %         RMSE_clean(ss, gg) = rmse(Z{ss,gg}(:), Z2_clean{ss}(:));
+    %         RMSE_corr(ss, gg) = rmse(Z_corr{ss,gg}(:), Z2_clean{ss}(:));
+    %     end
+    %     if snr(ss) < snr_max && snr(ss) > snr_min
+    %         semilogy(gain_V, RMSE_corr(ss, :), 'x-', 'DisplayName', "Korrigiert@" + string(snr(ss)) + " dB" )
+    %         semilogy(gain_V, RMSE_clean(ss, :), 'DisplayName', "Referenz@" + string(snr(ss)) + " dB" )
+    %     end
+    % end
+    % semilogy(gain_V, RMSE_clean(1, :), 'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth',1)
+    % 
+    % xlabel('Verstärkung')
+    % ylabel('RMSE (\mu\Omega)')
+    % title("RMSE")
+    % lg = legend;
+    % set(gca, 'YScale', 'log')
+    % lg.Location = 'northoutside';
+    % lg.FontSize = 4;
+    % lg.NumColumns = 2;
+    % grid on; box on
+    % hold off
+    % 
+    % nexttile
+    % hold on
+    % for ss=1:n_SNR
+    %     for gg=1:n_gain_Voltage
+    %         cutoff_values_Voltage_percent_plot(ss,gg) = cutoff_values_Voltage_percent{ss,gg}(1);
+    %         cutoff_values_Voltage_percent_plot_clean(ss,gg) = cutoff_values_Voltage_percent_clean{ss,gg}(1);
+    %     end
+    %     if snr(ss) < snr_max && snr(ss) > snr_min
+    %         plot(gain_V, cutoff_values_Voltage_percent_plot(ss,:),'x-', 'DisplayName', strcat("SNR = " + snr(ss)+ " dB"))
+    %     end 
+    % end
+    % plot(gain_V, cutoff_values_Voltage_percent_plot_clean(1,:),'o--', 'DisplayName', "No noise, no quantization etc." ,'LineWidth', 1)
+    % 
+    % xlabel('Verstärkung')
+    % ylabel('Sättigungsgrad (<0V or >3.3V) (%)')
+    % title("Sättigungsgrad")
+    % lg = legend;
+    % lg.Location = 'northoutside';
+    % lg.NumColumns = 2;
+    % fontsize(gcf,7,"pixels")
+    % grid on; box on
 end
-exportgraphics(gcf, "img/ergebnisse.pdf")
+exportgraphics(gcf, "ergebnisse.pdf")
+
+%%
+
+    for ss=1:n_SNR
+        for gg=1:n_gain_Voltage
+            rmseclean(ss, gg) = rmse(Z{ss,gg}(:), Z2_clean{ss}(:));
+            rmsecorr(ss, gg) = rmse(Z_corr{ss,gg}(:), Z2_clean{ss}(:));
+        end
+    end
+
+nom = max(max(rmseclean));
+rmseclean = rmseclean/nom;
+rmsecorr = rmsecorr/nom;
+
+snrxx = snr(1:end);
+gainxx = gain_V(1:end);
+cm = colormap(parula(100));
+cmq=cm;
+figure(15)
+tiledlayout(1,3,"TileSpacing","tight","Padding","tight")
+nexttile;
+h = heatmap(rmseclean);
+h.CellLabelFormat = "%.2f";
+% h.ColorScaling = 'scaledrows';
+ax = gca;
+colormap(ax, cmq);
+ax.XData = round(gainxx, 2);
+ax.YData = round(snrxx, 2);
+ax.ColorLimits = [0, 1];
+xlabel("Verstärkung");
+ylabel("SNR [dB]");
+title("RMSE ohne Korrektur");
+fontsize(gcf,7,"pixels")
+colorbar
+
+nexttile
+h = heatmap(rmsecorr);
+h.CellLabelFormat = "%.2f";
+% h.ColorScaling = 'scaledrows';
+ax = gca;
+colormap(ax, cmq);
+ax.XData = round(gainxx, 2);
+ax.YData = round(snrxx, 2);
+ax.ColorLimits = [0, 1];
+xlabel("Verstärkung");
+ylabel("SNR [dB]");
+title("RMSE mit Korrektur");
+fontsize(gcf,7,"pixels")
+colorbar
+
+nexttile
+h = heatmap(rmseclean - rmsecorr);
+h.CellLabelFormat = "%.2f";
+ % h.ColorScaling = 'scaledrows';
+ax = gca;
+colormap(ax, cmq);
+ax.XData = round(gainxx, 2);
+ax.YData = round(snrxx, 2);
+ax.ColorLimits = [0, 1];
+xlabel("Verstärkung");
+ylabel("SNR [dB]");
+title("RMSE Delta");
+fontsize(gcf,15,"pixels")
+colorbar
+
+exportgraphics(gcf, "delta.pdf")
